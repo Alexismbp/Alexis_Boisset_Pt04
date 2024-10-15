@@ -13,7 +13,7 @@ try {
 
 if ($conn) {
     // Obtenim i netegem les dades del formulari
-    $id = 3;//trim($_POST["id"] ?? null); // ID de l'article
+    $id = trim($_POST["id"] ?? null); // ID de l'article
     $nombre = trim($_POST["nombre"]); // Nom de l'article
     $descripcion = trim($_POST["descripcion"]); // Descripció de l'article
     $errorMessages = [];
@@ -36,6 +36,8 @@ if ($conn) {
         $errorMessages[] = 'L\'ID ha de ser numèric'; // Error per ID no numèric
         $error = true;
     } elseif (!empty($id) && is_numeric($id) && empty($descripcion) && empty($nombre)) {
+        unset($errorMessages);
+
         $resultat = consultarArticle($conn, $id); // Consulta l'article
 
         $article = $resultat->fetch(PDO::FETCH_ASSOC); // Resultat en format associatiu
@@ -50,7 +52,8 @@ if ($conn) {
             header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
             exit();
         } else {
-            $_SESSION['errors'] = "Aquest partit no s'ha creat"; // Missatge d'article no trobat
+            $errorMessages[] = "Aquest partit no s'ha creat";
+            $error = true;
         }
     }
 
