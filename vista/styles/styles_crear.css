@@ -1,126 +1,175 @@
-/* Alexis Boisset */
-
-/* General */
+/* Estilos generales */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Fondo degradado */
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(to right, #74ebd5, #acb6e5);
+    height: 100vh;
 }
 
 /* Contenedor principal */
 .container {
-    width: 90%;
-    max-width: 800px;
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
     text-align: center;
 }
 
-/* Título */
+/* Estilos para el encabezado */
 h1 {
-    font-size: 2.2em;
+    font-size: 24px;
     color: #333;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
-/* Formulario */
+/* Estilos para el formulario */
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
 label {
-    font-weight: bold;
-    color: #444;
-    font-size: 1.2em;
-    text-align: left;
+    font-size: 14px;
     margin-bottom: 5px;
+    text-align: left;
 }
 
-/* Campos del formulario */
-input[type="text"], textarea {
-    width: 100%;
-    padding: 12px;
+.input-field {
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f9f9f9;
+    border-radius: 5px;
     transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus, textarea:focus {
-    border-color: #007BFF;
+.input-field:focus {
+    border-color: #007bff;
     outline: none;
 }
 
-textarea {
+textarea.input-field {
     resize: none;
-    height: 150px; /* Altura del campo de texto */
 }
 
-/* Botón enviar */
-input[type="submit"] {
-    padding: 12px;
-    font-size: 1.2em;
-    font-weight: bold;
-    background-color: #007BFF;
+/* Botón de envío */
+.btn-submit {
+    background-color: #007bff;
     color: white;
+    padding: 10px 15px;
+    font-size: 16px;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
-input[type="submit"]:hover {
+.btn-submit:hover {
     background-color: #0056b3;
-    box-shadow: 0 8px 15px rgba(0, 123, 255, 0.3);
 }
 
-/* Botón regresar */
-a.button {
+/* Botón "Tornar" */
+.btn-back {
     display: inline-block;
-    padding: 12px 20px;
-    background-color: #28a745;
-    color: white;
-    border-radius: 8px;
-    font-weight: bold;
+    color: #007bff;
     text-decoration: none;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 14px;
+    margin-top: 20px;
+    transition: color 0.3s ease;
 }
 
-a.button:hover {
-    background-color: #218838;
-    box-shadow: 0 8px 15px rgba(33, 136, 56, 0.3);
+.btn-back:hover {
+    color: #0056b3;
 }
 
-/* Ajustes para el diseño flexible */
-.form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+/* Mensajes de éxito y error */
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
 }
 
-.form-row > div {
-    flex: 1;
-    min-width: 200px;
+.success {
+    background-color: #28a745;
 }
 
-@media screen and (max-width: 768px) {
+.error {
+    background-color: #dc3545;
+}
+
+/* Mensaje de error cuando se requiere mostrar */
+.noole {
+    background-color: #ffcccc;
+    color: #ff0000;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+/* Mensaje de éxito */
+.ole {
+    background-color: #ccffcc;
+    color: #006600;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+/* Fondo */
+html, body {
+    height: 100%;
+}
+
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
+}
+
+/* Espaciado entre elementos */
+form label,
+form input,
+form textarea {
+    margin-bottom: 10px;
+}
+
+/* Estilos del campo ID solo cuando es readonly */
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
     .container {
-        width: 100%;
-        padding: 20px;
+        width: 90%;
     }
-    
-    .form-row {
-        flex-direction: column;
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .input-field {
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        font-size: 14px;
+        padding: 8px;
     }
 }

@@ -1,5 +1,6 @@
 <?php
 // Alexis Boisset
+session_start();
 
 require "../model/db_conn.php"; // Requerim la connexió a la Database
 require "../model/porra.php"; // Requerim el CRUD
@@ -12,12 +13,12 @@ try {
 
 if ($conn) {
     // Obtenim i netegem les dades del formulari
-    $id = 1;//trim($_POST["id"] ?? null); // ID de l'article
+    $id = trim($_POST["id"] ?? null); // ID de l'article
     $nombre = trim($_POST["nombre"]); // Nom de l'article
     $descripcion = trim($_POST["descripcion"]); // Descripció de l'article
     $errorMessages = [];
     $error = false; // Indicador d'error
-    
+
 
     // Comprovar si els camps estan buits
     if (empty($nombre)) {
@@ -46,8 +47,8 @@ if ($conn) {
             $_SESSION["id"] = $id; // ID
             $_SESSION['editant'] = true;
 
-            header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
-            exit();
+            //header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
+            //exit();
         } else {
             echo "Article no trobat."; // Missatge d'article no trobat
         }
@@ -77,11 +78,10 @@ if ($conn) {
     // Executa la consulta
     try {
         if ($resultat->execute()) {
-            $_SESSION['success'] = true;
-            
+            $_SESSION['success'] = "L'article s'ha inserit correctament!";
         } else {
             print_r($resultat->errorInfo()); // Mostra errors
-            $_SESSION['failure'] = true;
+            $_SESSION['failure'] = "Algo no ha funcionat com s'esperava";
         }
     } catch (\Throwable $th) {
         echo "Hi ha hagut un error: " . $th->getMessage(); // Mostra error si ocorre excepció
@@ -90,7 +90,7 @@ if ($conn) {
         exit();
     }
 } else {
-    $_SESSION['failure'] = true;
+    $_SESSION['failure'] = "Algo no ha funcionat com s'esperava";
     header("Location: ../vista/crear.php"); // Redirigeix si falla la connexió
     exit();
 }

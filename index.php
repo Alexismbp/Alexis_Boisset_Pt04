@@ -36,4 +36,4 @@ $totalArticles = $conn->query("SELECT COUNT(*) FROM articles")->fetchColumn();
 // Calculem el numero de pagines que tindrà la paginació. Llavors hem de dividir el total d'articles entre els POSTS per pagina
 $totalPages = ceil($totalArticles / $postsPerPage);
 
-require "vista/index.vista.php";
+include "vista/index.vista.php";
