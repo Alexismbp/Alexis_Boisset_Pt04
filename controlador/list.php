@@ -1,7 +1,7 @@
 <?php
 // Alexis Boisset
 
-require "../model/database.php"; // Inclou la classe Database per a la connexió
+require "../model/db_conn.php"; // Inclou la classe Database per a la connexió
 
 // Funció per obtenir totes les files d'articles
 function solicitudRows()

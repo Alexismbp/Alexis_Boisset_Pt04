@@ -2,7 +2,7 @@
 // Alexis Boisset
 
 try {
-    require "../model/database.php"; // Inclou la classe Database per a la connexió
+    require "../model/db_conn.php"; // Inclou la classe Database per a la connexió
 
     try {
         $database = new Database();
