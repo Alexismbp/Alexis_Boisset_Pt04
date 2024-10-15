@@ -3,8 +3,15 @@
 
 // Inicia la sessió
 session_start();
+
+// Si s'ha fet click al boto "Netejar"
+if (isset($_GET['netejar'])) {
+    $_SESSION = array();  // Limpiar todas las variables de la sesión
+}
+
 // Comprova si s'està editant i estableix l'atribut readonly
 $edit = (isset($_SESSION['editant'])) ? "readonly" : "";
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +37,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : "";
                 echo '<div class="message error">' . $_SESSION['failure'] . '</div>';
                 unset($_SESSION['failure']); // Limpiamos el mensaje después de mostrarlo
             }
-            
+
             if (isset($_SESSION['errors'])) {
                 foreach ($_SESSION['errors'] as $error) {
                     echo '<div class="message error">' . $error . '</div>';
@@ -52,6 +59,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : "";
             <input type="submit" value="Enviar" class="btn-submit">
         </form>
 
+        <a href="crear.php?netejar=true" class="btn-back">Netejar</a>
         <br>
         <a href="../index.php" class="btn-back">Tornar</a>
     </div>

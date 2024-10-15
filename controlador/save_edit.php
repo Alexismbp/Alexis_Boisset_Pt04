@@ -13,7 +13,7 @@ try {
 
 if ($conn) {
     // Obtenim i netegem les dades del formulari
-    $id = trim($_POST["id"] ?? null); // ID de l'article
+    $id = 3;//trim($_POST["id"] ?? null); // ID de l'article
     $nombre = trim($_POST["nombre"]); // Nom de l'article
     $descripcion = trim($_POST["descripcion"]); // Descripció de l'article
     $errorMessages = [];
@@ -47,10 +47,10 @@ if ($conn) {
             $_SESSION["id"] = $id; // ID
             $_SESSION['editant'] = true;
 
-            //header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
-            //exit();
+            header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
+            exit();
         } else {
-            echo "Article no trobat."; // Missatge d'article no trobat
+            $_SESSION['errors'] = "Aquest partit no s'ha creat"; // Missatge d'article no trobat
         }
     }
 
@@ -71,6 +71,9 @@ if ($conn) {
     // Inserció o actualització de l'article
     if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id'] > 0) {
         $resultat = update($conn, $_SESSION['id'], $nombre, $descripcion); // Actualitza
+
+        $_SESSION['descripcion'] = $descripcion;
+        $_SESSION['nombre'] = $nombre;
     } else {
         $resultat = insert($conn, $nombre, $descripcion); // Insereix
     }
