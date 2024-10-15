@@ -1,8 +1,6 @@
 <?php
 // Alexis Boisset
 
-session_start(); // Inici de sessió per a gestionar dades d'usuari
-
 require "../model/database.php"; // Inclou la classe Database
 
 try {
@@ -58,8 +56,9 @@ if ($conn) {
     if ($error) {
         $_SESSION["nombre"] = $_POST["nombre"]; // Nom
         $_SESSION["descripcion"] = $_POST["descripcion"]; // Descripció
+        $_SESSION['errors'] = $calculError;
 
-        header("Location: ../vista/crear.php?errors=" . $calculError); // Redirigeix amb errors
+        header("Location: ../vista/crear.php"); // Redirigeix amb errors
         exit();
     }
 
@@ -77,18 +76,21 @@ if ($conn) {
     // Executa la consulta
     try {
         if ($resultat->execute()) {
-            header("Location: ../vista/crear.php?success"); // Redirigeix amb èxit
-            $_SESSION = array(); // Neteja la sessió
+            $_SESSION['success'] = true;
+            
         } else {
             print_r($resultat->errorInfo()); // Mostra errors
-            header("Location: ../vista/crear.php?failure"); // Redirigeix amb fallida
+            $_SESSION['failure'] = true;
         }
     } catch (\Throwable $th) {
         echo "Hi ha hagut un error: " . $th->getMessage(); // Mostra error si ocorre excepció
+    } finally {
+        header("Location: ../vista/crear.php");
         exit();
     }
 } else {
-    header("Location: ../vista/crear.php?failure"); // Redirigeix si falla la connexió
+    $_SESSION['failure'] = true;
+    header("Location: ../vista/crear.php"); // Redirigeix si falla la connexió
     exit();
 }
 

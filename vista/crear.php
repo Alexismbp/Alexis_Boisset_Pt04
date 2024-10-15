@@ -5,6 +5,16 @@
 session_start();
 // Comprova si s'està editant i estableix l'atribut readonly
 $edit = ($_GET["editant"]) ? "readonly" : "";
+
+$errorMessages = [
+    1 => 'Error: És obligatori un títol.',
+    3 => 'Error: És obligatori una descripció.',
+    4 => 'Error: És obligatori un títol. <br> Error: És obligatori una descripció.',
+    5 => 'Error: La ID ha de ser numèrica.',
+    6 => 'Error: La ID ha de ser numèrica. <br> Error: És obligatori un títol.',
+    8 => 'Error: La ID ha de ser numèrica. <br> Error: És obligatori una descripció.',
+    9 => 'Error: La ID ha de ser numèrica. <br> Error: És obligatori un títol. <br> Error: És obligatori una descripció.'
+];
 ?>
 
 <!DOCTYPE html>
@@ -14,42 +24,38 @@ $edit = ($_GET["editant"]) ? "readonly" : "";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Elemento</title>
-    <link rel="stylesheet" href="../styles/styles_crear.css">
+    <link rel="stylesheet" href="./styles/styles_crear.css">
 </head>
 
 <body>
     <h1>Crear nou element</h1>
-    <form action="../controlador/save.php" method="POST">
+    <form action="../controlador/save_edit.php" method="POST">
         <!-- Missatges d'èxit o error -->
-        <?php if (isset($_GET["success"])) { ?>
-            <span class="ole">¡Article guardat correctament!</span>
-            <?php session_destroy() // Elimina les variables de sessió 
-            ?>
-        <?php } elseif (isset($_GET["failure"])) { ?>
-            <span class="noole">Alguna cosa no ha funcionat com hauria.</span>
-        <?php } ?>
+        <?php
+        if (isset($_SESSION['success'])) {
+            echo '<span class="ole"> Article guardat correctament!</span>';
+            unset($_SESSION['success']);
+
+        } elseif (isset($_SESSION['failure'])) {
+            echo '<span class="ole"> Algo no ha funcionat com s\'esperaba</span>';
+            unset($_SESSION['failure']);
+        }
+        
+        ?>
 
         <!-- Mostrar errors si existeixen -->
-        <?php if ($_GET['errors'] == 1) { ?>
-            <span class="noole">Error: És obligatori un títol.</span>
-        <?php } elseif ($_GET['errors'] == 3) { ?>
-            <span class="noole">Error: És obligatori una descripció.</span>
-        <?php } elseif ($_GET['errors'] == 4) { ?>
-            <span class="noole">Error: És obligatori un títol. <br>
-                Error: És obligatori una descripció.</span>
-        <?php } elseif ($_GET['errors'] == 5) { ?>
-            <span class="noole">Error: La ID ha de ser numèrica. </span>
-        <?php } elseif ($_GET['errors'] == 6) { ?>
-            <span class="noole">Error: La ID ha de ser numèrica. <br>
-                Error: És obligatori un títol. </span>
-        <?php } elseif ($_GET['errors'] == 8) { ?>
-            <span class="noole">Error: La ID ha de ser numèrica.<br>
-                Error: És obligatori una descripció. </span>
-        <?php } elseif ($_GET['errors'] == 9) { ?>
-            <span class="noole">Error: La ID ha de ser numèrica <br>
-                Error: És obligatori un títol. <br>
-                Error: És obligatori una descripció. </span>
-        <?php } ?>
+        <?php
+        if (isset($_SESSION['errors'])) {
+            $errorCode = $_SESSION['errors'];
+
+            // Comprovar si el codi d'error existeix en l'array d'errors
+            if (isset($errorMessages[$errorCode])) {
+                echo '<span class="noole">' . $errorMessages[$errorCode] . '</span>';
+            }
+
+            unset($_SESSION['errors']); // Esborrem l'error una vegada mostrat
+        }
+        ?>
 
 
         <!-- Formulari -->

@@ -5,7 +5,7 @@ class Database
 {
 
     private $servername = "127.0.0.1";  // Host del servidor MySQL
-    private $dbname = "Pt02_Alexis_Boisset";  // Nom de la base de dades
+    private $dbname = "Pt04_Alexis_Boisset";  // Nom de la base de dades
     private $username = "root";  // Nom d'usuari MySQL
     private $password = "";  // Contrasenya MySQL
 

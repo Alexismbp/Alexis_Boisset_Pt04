@@ -6,12 +6,7 @@ Testament:
 La plantilla que has passat em fa dubtar de si estic utilitzant el Model-Vista-Controlador correctament
 perque si no le he entés malament ens estás demanant que fem operacions y consultes a la base de dades en el mateix fitxer (?)
 O sigui fa de Model i Controlador a la vegada i després fa un require de la vista (?????). Bueno no sé si es correcte el que he fet.
-
-La majoría de cosas que hi ha están reciclades de la Pt02.
 */
-
-// Reinicia les variables de sessió
-session_reset();
 
 // Ens connectem a la base de dades	
 require "./model/database.php";
