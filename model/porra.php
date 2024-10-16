@@ -8,80 +8,53 @@ function ultimaIdDisponible($conn)
 
     $query = "SELECT id FROM usuaris";
     $allId = $conn->prepare($query);
-    // No es pot fer un execute() directament sense un prepare(), sembla un Diesel que tens que deixar que escalfi tu. 
 
     $allId->execute();
 
+    // Fetching IDs into an array
     $idDisponible = $allId->fetchAll(PDO::FETCH_COLUMN, 0);
 
     foreach ($idDisponible as $idActual) {
         if ($contador != $idActual) {
-            return $contador;
+            return $contador; // Retorna l'ID disponible si no coincideix
         }
         $contador++;
     }
 
-    return $contador;
+    return $contador; // Retorna el contador si no hi ha buits
 }
 
-// Select de tota la vida
-
-/* function consultarArticle($conn, $id)
-{
-    $sql = "SELECT e1.nombre AS equipo_local, e2.nombre AS equipo_visitante, p.goles_local, p.goles_visitante, p.fecha
-            FROM partidos p
-            JOIN equipos e1 ON p.equipo_local_id = e1.id
-            JOIN equipos e2 ON p.equipo_visitante_id = e2.id
-            WHERE p.jugado = 1;";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-
-    return $stmt;
-} */
-
-/* function insert($conn, $nombre, $descripcion)
-{
-    $sql = "INSERT INTO articles (id, titol, cos) VALUES (:id, :nombre, :descripcion)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', ultimaIdDisponible($conn));
-    $stmt->bindParam(':nombre', $nombre);
-    $stmt->bindParam(':descripcion', $descripcion);
-
-    return $stmt;
-} */
-
-function insertPartido($conn, $equipo_local, $equipo_visitante, $fecha, $goles_local, $goles_visitante) {
+function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante) {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
-    $sql = "INSERT INTO partits (equipo_local_id, equipo_visitante_id, fecha, goles_local, goles_visitante, jugado) 
-            VALUES (:equipo_local, :equipo_visitante, :fecha, :goles_local, :goles_visitante, :jugado)";
+    $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat) 
+            VALUES (:equipo_local_id, :equipo_visitante_id, :fecha, :goles_local, :goles_visitante, :jugado)";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':equipo_local', $equipo_local);
-    $stmt->bindParam(':equipo_visitante', $equipo_visitante);
+    $stmt->bindParam(':equipo_local_id', $equipo_local_id);
+    $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':goles_local', $goles_local);
     $stmt->bindParam(':goles_visitante', $goles_visitante);
     $stmt->bindParam(':jugado', $jugado);
 
-    return $stmt;
+    return $stmt; // Retorna el statement per executar-lo després
 }
 
-function updatePartido($conn, $id, $equipo_local, $equipo_visitante, $fecha, $goles_local, $goles_visitante) {
+function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante) {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "UPDATE partits 
-            SET equipo_local_id = :equipo_local, equipo_visitante_id = :equipo_visitante, fecha = :fecha, 
-                goles_local = :goles_local, goles_visitante = :goles_visitante, jugado = :jugado 
+            SET equip_local_id = :equipo_local_id, equip_visitant_id = :equipo_visitante_id, data = :fecha, 
+                gols_local = :goles_local, gols_visitant = :goles_visitante, jugat = :jugado 
             WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':equipo_local', $equipo_local);
-    $stmt->bindParam(':equipo_visitante', $equipo_visitante);
+    $stmt->bindParam(':equipo_local_id', $equipo_local_id);
+    $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':goles_local', $goles_local);
     $stmt->bindParam(':goles_visitante', $goles_visitante);
     $stmt->bindParam(':jugado', $jugado);
 
-    return $stmt;
+    return $stmt; // Retorna el statement per executar-lo després
 }
 
 function consultarPartido($conn, $id) {
@@ -89,39 +62,33 @@ function consultarPartido($conn, $id) {
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    return $stmt;
+    return $stmt; // Retorna el statement per a futures manipulacions
 }
 
-
-/* function update($conn, $id, $nombre, $descripcion)
-{
+/* 
+function update($conn, $id, $nombre, $descripcion) {
     $sql = "UPDATE articles SET titol = :nombre, cos = :descripcion WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':nombre', $nombre);
     $stmt->bindParam(':descripcion', $descripcion);
 
-    return $stmt;
+    return $stmt; // Retorna el statement per a futures manipulacions
 }
 
-function delete($conn, $id)
-{
+function delete($conn, $id) {
     $sql = "DELETE FROM articles WHERE id = :id";
     $stmt = $conn->prepare($sql);
-    $stmt->bindparam(':id', $id);
+    $stmt->bindParam(':id', $id); // Correcció de la funció: 'bindparam' a 'bindParam'
 
-    return $stmt;
+    return $stmt; // Retorna el statement per a futures manipulacions
 }
 
-function allArticles($conn)
-{
+function allArticles($conn) {
     $sql = "SELECT * FROM articles";
     $resultat = $conn->prepare($sql);
-
     $resultat->execute();
 
-    $resultat = $resultat->fetchAll(PDO::FETCH_ASSOC);
-
-    return $resultat;
+    return $resultat->fetchAll(PDO::FETCH_ASSOC); // Retorna tots els articles com un array associatiu
 }
- */
+*/

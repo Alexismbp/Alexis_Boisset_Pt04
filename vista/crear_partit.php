@@ -10,6 +10,18 @@ if (isset($_GET['netejar'])) {
 
 // Comprova si s'està editant i estableix l'atribut readonly
 $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està editant, estableix l'atribut readonly per evitar canvis.
+
+// Funció per obtenir el nom de l'equip a partir de la seva ID
+function getTeamName($conn, $id) {
+    $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+// Obtenim els noms dels equips per a mostrar-los
+$equip_local_name = isset($_SESSION['equip_local']) ? getTeamName($conn, $_SESSION['equip_local']) : '';
+$equip_visitant_name = isset($_SESSION['equip_visitant']) ? getTeamName($conn, $_SESSION['equip_visitant']) : '';
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +37,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
 <body>
     <div class="container">
         <h1>Crear o Editar Partit</h1> <!-- Títol de la pàgina. -->
-        <form action="../controlador/save_partido.php" method="POST"> <!-- Formulari per crear o editar un partit. -->
+        <form action="../controlador/save_partit.php" method="POST"> <!-- Formulari per crear o editar un partit. -->
             <!-- Missatges d'èxit o error -->
             <?php
             // Mostra missatges d'èxit o error si existeixen.
@@ -50,27 +62,24 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
             <label for="id">ID del Partit (només per editar):</label>
             <input type="text" id="id" name="id" class="input-field" placeholder="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>" <?php echo $edit ?>> <!-- Input per l'ID del partit, només editable si no s'està editant. -->
 
-            <label for="equipo_local">Equip Local:</label>
-            <input type="text" id="equipo_local" name="equipo_local" class="input-field" value="<?php echo isset($_SESSION['equipo_local']) ? $_SESSION['equipo_local'] : ''; ?>" placeholder="Escriu el nom de l'equip local"> <!-- Input per l'equip local. -->
+            <label for="equip_local">Equip Local:</label>
+            <input type="text" id="equip_local" name="equip_local" class="input-field" value="<?php echo $equip_local_name; ?>" placeholder="Escriu el nom de l'equip local" readonly> <!-- Input per l'equip local, només lectura. -->
 
-            <label for="equipo_visitante">Equip Visitant:</label>
-            <input type="text" id="equipo_visitante" name="equipo_visitante" class="input-field" value="<?php echo isset($_SESSION['equipo_visitante']) ? $_SESSION['equipo_visitante'] : ''; ?>" placeholder="Escriu el nom de l'equip visitant"> <!-- Input per l'equip visitant. -->
+            <label for="equip_visitant">Equip Visitant:</label>
+            <input type="text" id="equip_visitant" name="equip_visitant" class="input-field" value="<?php echo $equip_visitant_name; ?>" placeholder="Escriu el nom de l'equip visitant" readonly> <!-- Input per l'equip visitant, només lectura. -->
 
-            <label for="fecha">Data del Partit:</label>
-            <input type="date" id="fecha" name="fecha" class="input-field" value="<?php echo isset($_SESSION['fecha']) ? $_SESSION['fecha'] : ''; ?>"> <!-- Input per la data del partit. -->
+            <label for="data">Data del Partit:</label>
+            <input type="date" id="data" name="data" class="input-field" value="<?php echo isset($_SESSION['data']) ? $_SESSION['data'] : ''; ?>"> <!-- Input per la data del partit. -->
 
-            <label for="goles_local">Gols Local (Opcional):</label>
-            <input type="number" id="goles_local" name="goles_local" class="input-field" value="<?php echo isset($_SESSION['goles_local']) ? $_SESSION['goles_local'] : ''; ?>"> <!-- Input per gols locals, opcional. -->
+            <label for="gols_local">Gols Local (Opcional):</label>
+            <input type="number" id="gols_local" name="gols_local" class="input-field" value="<?php echo isset($_SESSION['gols_local']) ? $_SESSION['gols_local'] : ''; ?>"> <!-- Input per gols locals, opcional. -->
 
-            <label for="goles_visitante">Gols Visitant (Opcional):</label>
-            <input type="number" id="goles_visitante" name="goles_visitante" class="input-field" value="<?php echo isset($_SESSION['goles_visitante']) ? $_SESSION['goles_visitante'] : ''; ?>"> <!-- Input per gols visitants, opcional. -->
+            <label for="gols_visitant">Gols Visitant (Opcional):</label>
+            <input type="number" id="gols_visitant" name="gols_visitant" class="input-field" value="<?php echo isset($_SESSION['gols_visitant']) ? $_SESSION['gols_visitant'] : ''; ?>"> <!-- Input per gols visitants, opcional. -->
 
-            <input type="submit" value="Enviar" class="btn-submit"> <!-- Botó per enviar el formulari. -->
+            <button type="submit" class="button">Guardar</button> <!-- Botó per guardar els canvis. -->
+            <button type="submit" name="netejar" class="button">Netejar</button> <!-- Botó per netejar els camps del formulari. -->
         </form>
-
-        <a href="crear_partido.php?netejar=true" class="btn-back">Netejar</a> <!-- Enllaç per netejar el formulari. -->
-        <br>
-        <a href="../index.php" class="btn-back">Tornar</a> <!-- Enllaç per tornar a la pàgina principal. -->
     </div>
 </body>
 

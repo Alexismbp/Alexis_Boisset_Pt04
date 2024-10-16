@@ -22,7 +22,7 @@ if ($conn) {
     $missatgesError = [];
     $error = false;
 
-    // Comprovar camps buits
+    // Comprobar camps buits
     if (empty($equip_local)) {
         $missatgesError[] = 'L\'equip local no pot estar buit';
         $error = true;
@@ -48,9 +48,9 @@ if ($conn) {
         $partit = $resultat->fetch(PDO::FETCH_ASSOC);
 
         if ($partit) {
-            $_SESSION['equip_local'] = $partit['equip_local'];
-            $_SESSION['equip_visitant'] = $partit['equip_visitant'];
-            $_SESSION['data'] = $partit['data'];
+            $_SESSION['equip_local'] = $partit['equip_local_id']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
+            $_SESSION['equip_visitant'] = $partit['equip_visitant_id']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
+            $_SESSION['data'] = $partit['data']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
             $_SESSION["id"] = $id;
             $_SESSION['editant'] = true;
 
@@ -100,17 +100,3 @@ if ($conn) {
     header("Location: ../vista/crear_partit.php");
     exit();
 }
-
-/*
--- Insertar un partit que se va a jugar (sense resultats)
-INSERT INTO partits (equip_local_id, equip_visitant_id, data, jugat) 
-VALUES ((SELECT id FROM equips WHERE nom = 'Equip Local'), 
-        (SELECT id FROM equips WHERE nom = 'Equip Visitant'), 
-        'YYYY-MM-DD', 0);
-
--- Insertar un partit que ja s'ha jugat (amb resultats)
-INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat) 
-VALUES ((SELECT id FROM equips WHERE nom = 'Equip Local'), 
-        (SELECT id FROM equips WHERE nom = 'Equip Visitant'), 
-        'YYYY-MM-DD', 2, 1, 1);
-*/
