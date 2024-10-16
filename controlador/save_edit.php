@@ -2,110 +2,115 @@
 // Alexis Boisset
 session_start();
 
-require "../model/db_conn.php"; // Requerim la connexió a la Database
-require "../model/porra.php"; // Requerim el CRUD
+require "../model/db_conn.php";
+require "../model/porra.php";
 
 try {
-    $conn = connect(); // Crea una connexió a la base de dades
+    $conn = connect();
 } catch (PDOException $e) {
     die("Error de connexió: " . $e->getMessage());
 }
 
 if ($conn) {
     // Obtenim i netegem les dades del formulari
-    $id = trim($_POST["id"] ?? null); // ID de l'article
-    $nombre = trim($_POST["nombre"]); // Nom de l'article
-    $descripcion = trim($_POST["descripcion"]); // Descripció de l'article
-    $errorMessages = [];
-    $error = false; // Indicador d'error
+    $id = trim($_POST["id"] ?? null);
+    $equip_local = trim($_POST["equip_local"]);
+    $equip_visitant = trim($_POST["equip_visitant"]);
+    $data = trim($_POST["data"]);
+    $gols_local = trim($_POST["gols_local"] ?? null);
+    $gols_visitant = trim($_POST["gols_visitant"] ?? null);
+    $missatgesError = [];
+    $error = false;
 
-
-    // Comprovar si els camps estan buits
-    if (empty($nombre)) {
-        $errorMessages[] = 'El títol no pot estar buit'; // Error per nom buit
+    // Comprovar camps buits
+    if (empty($equip_local)) {
+        $missatgesError[] = 'L\'equip local no pot estar buit';
         $error = true;
     }
 
-    if (empty($descripcion)) {
-        $errorMessages[] = 'La descripció no pot estar buida'; // Error per descripció buida
+    if (empty($equip_visitant)) {
+        $missatgesError[] = 'L\'equip visitant no pot estar buit';
+        $error = true;
+    }
+
+    if (empty($data)) {
+        $missatgesError[] = 'La data no pot estar buida';
         $error = true;
     }
 
     // Verificació de l'ID
     if (!empty($id) && !is_numeric($id)) {
-        $errorMessages[] = 'L\'ID ha de ser numèric'; // Error per ID no numèric
+        $missatgesError[] = 'L\'ID ha de ser numèric';
         $error = true;
-    } elseif (!empty($id) && is_numeric($id) && empty($descripcion) && empty($nombre)) {
-        unset($errorMessages);
+    } elseif (!empty($id)) {
+        // Consulta el partit per editar
+        $resultat = consultarPartido($conn, $id);
+        $partit = $resultat->fetch(PDO::FETCH_ASSOC);
 
-        $resultat = consultarArticle($conn, $id); // Consulta l'article
-
-        $article = $resultat->fetch(PDO::FETCH_ASSOC); // Resultat en format associatiu
-
-        if ($article) {
-            // Guardar les dades a la sessió
-            $_SESSION['nombre'] = $article['titol']; // Títol
-            $_SESSION['descripcion'] = $article['cos']; // Cos
-            $_SESSION["id"] = $id; // ID
+        if ($partit) {
+            $_SESSION['equip_local'] = $partit['equip_local'];
+            $_SESSION['equip_visitant'] = $partit['equip_visitant'];
+            $_SESSION['data'] = $partit['data'];
+            $_SESSION["id"] = $id;
             $_SESSION['editant'] = true;
 
-            header("Location: ../vista/crear.php"); // Redirigeix a creació d'articles
+            header("Location: ../vista/crear_partit.php");
             exit();
         } else {
-            $errorMessages[] = "Aquest partit no s'ha creat";
+            $missatgesError[] = "Aquest partit no existeix";
             $error = true;
         }
     }
 
-    // Si hi ha errors, es redirigeix amb Errors
+    // Si hi ha errors, redirigeix amb errors
     if ($error) {
-        $_SESSION["nombre"] = $_POST["nombre"]; // Nom
-        $_SESSION["descripcion"] = $_POST["descripcion"]; // Descripció
-        $_SESSION['errors'] = $errorMessages;
+        $_SESSION["equip_local"] = $equip_local;
+        $_SESSION["equip_visitant"] = $equip_visitant;
+        $_SESSION["data"] = $data;
+        $_SESSION["gols_local"] = $gols_local;
+        $_SESSION["gols_visitant"] = $gols_visitant;
+        $_SESSION['errors'] = $missatgesError;
 
-        header("Location: ../vista/crear.php"); // Redirigeix amb errors
+        header("Location: ../vista/crear_partit.php");
         exit();
     }
 
-    // Sanitització per a la base de dades
-    $nombre = validarInput($nombre); // Sanititza el nom
-    $descripcion = validarInput($descripcion); // Sanititza la descripció
-
-    // Inserció o actualització de l'article
+    // Inserció o actualització del partit
     if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id'] > 0) {
-        $resultat = update($conn, $_SESSION['id'], $nombre, $descripcion); // Actualitza
-
-        $_SESSION['descripcion'] = $descripcion;
-        $_SESSION['nombre'] = $nombre;
+        $resultat = updatePartido($conn, $_SESSION['id'], $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
     } else {
-        $resultat = insert($conn, $nombre, $descripcion); // Insereix
+        $resultat = insertPartido($conn, $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
     }
 
     // Executa la consulta
     try {
         if ($resultat->execute()) {
-            $_SESSION['success'] = "L'article s'ha inserit correctament!";
+            $_SESSION['success'] = "El partit s'ha inserit correctament!";
         } else {
-            print_r($resultat->errorInfo()); // Mostra errors
-            $_SESSION['failure'] = "Algo no ha funcionat com s'esperava";
+            $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
         }
     } catch (\Throwable $th) {
-        echo "Hi ha hagut un error: " . $th->getMessage(); // Mostra error si ocorre excepció
+        $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     } finally {
-        header("Location: ../vista/crear.php");
+        header("Location: ../vista/crear_partit.php");
         exit();
     }
 } else {
-    $_SESSION['failure'] = "Algo no ha funcionat com s'esperava";
-    header("Location: ../vista/crear.php"); // Redirigeix si falla la connexió
+    $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
+    header("Location: ../vista/crear_partit.php");
     exit();
 }
 
-// Funció per validar i sanititzar l'input
-function validarInput($data)
-{
-    $data = trim($data); // Elimina espais en blanc
-    $data = filter_var($data); // Sanitització
-    $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8'); // Evita injeccions
-    return $data; // Retorna les dades sanititzades
-}
+/*
+-- Insertar un partit que se va a jugar (sense resultats)
+INSERT INTO partits (equip_local_id, equip_visitant_id, data, jugat) 
+VALUES ((SELECT id FROM equips WHERE nom = 'Equip Local'), 
+        (SELECT id FROM equips WHERE nom = 'Equip Visitant'), 
+        'YYYY-MM-DD', 0);
+
+-- Insertar un partit que ja s'ha jugat (amb resultats)
+INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat) 
+VALUES ((SELECT id FROM equips WHERE nom = 'Equip Local'), 
+        (SELECT id FROM equips WHERE nom = 'Equip Visitant'), 
+        'YYYY-MM-DD', 2, 1, 1);
+*/

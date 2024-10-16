@@ -26,7 +26,7 @@
     <h1>Gestió d'articles</h1>
     <ul>
         <!-- Enllaços per a gestionar els articles -->
-        <li><a href="vista/crear.php">Crear nou element</a></li>
+        <li><a href="vista/crear_partit.php">Crear nou element</a></li>
         <li><a href="vista/llistar.php">Consultar elements</a></li>
         <li><a href="vista/eliminar.php">Eliminar un element</a></li>
     </ul>
