@@ -1,19 +1,30 @@
 <?php
 // Alexis Boisset
-
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Aquí iría la lógica para registrar al usuario.
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+require '../model/user_model.php';
 
-    // En un sistema real, guardarías esto en la base de datos.
-    // Ejemplo sencillo de registro.
-    $_SESSION['loggedin'] = true;
-    $_SESSION['username'] = $username;
-    header("Location: index.php");
-    exit();
+FALTA AÑADIR EQUIPO PARA INSERTAR EN BASE DE DATOS
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $username = validate($_POST['username']);
+    $password = validate($_POST['password']);
+    $email = validate($_POST['email']);
+
+    if (registerUser($username, $email, $password)) {
+
+        $_SESSION['loggedin'] = true;
+        $_SESSION['username'] = $username;
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
 }
-?>
+
+function validate ($data) {
+    trim($data);
+    htmlspecialchars($data);
+    stripslashes($data);
+    filter_var($data);
+}
 

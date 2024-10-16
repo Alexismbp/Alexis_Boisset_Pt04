@@ -12,12 +12,12 @@
 <header>
 <?php if (!isset($_SESSION['loggedin'])): ?>
         <!-- Opciones de logarse o registrar-se cuando no está logado -->
-        <a href="login.php" class="btn-login">Logar-se</a>
-        <a href="register.php" class="btn-register">Enregistrar-se</a>
+        <a href="./vista/login.vista.php" class="btn-login">Logar-se</a>
+        <a href="./vista/register.view.php" class="btn-register">Enregistrar-se</a>
     <?php else: ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="logout.php" class="btn-logout">Tancar sessió</a>
+        <a ºhref="logout.php" class="btn-logout">Tancar sessió</a>
     <?php endif; ?>
 
 </header>
