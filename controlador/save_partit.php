@@ -22,6 +22,16 @@ if ($conn) {
     $missatgesError = [];
     $error = false;
 
+    /* $_SESSION['id'] = 6;
+    //$id = ;
+    $equip_local = "FC Barcelona";
+    $equip_visitant = "Atlético de Madrid";
+    $data = trim("17/10/2024");
+    $gols_local = 1;
+    $gols_visitant = 2;
+    $missatgesError = [];
+    $error = false; */
+
     // Comprobar camps buits
     if (empty($equip_local)) {
         $missatgesError[] = 'L\'equip local no pot estar buit';
@@ -84,19 +94,8 @@ if ($conn) {
 
     $equip_local = getTeamID($conn, $equip_local);
     $equip_visitant = getTeamID($conn, $equip_visitant);
-    try {
-        $data = DateTime::createFromFormat('d/m/Y', $data);
-        if ($data) {
-            $data = $data->format('Y-m-d'); // Convierte a YYYY-MM-DD
-        } else {
-            $missatgesError[] = 'El format de la data no és vàlid';
-            $error = true;
-        }
-    } catch (\Throwable $th) {
-        $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
-        header("Location: ../vista/crear_partit.php");
-        exit();
-    }
+
+
 
     // Inserció o actualització del partit
     if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id'] > 0) {
@@ -115,6 +114,9 @@ if ($conn) {
     } catch (\Throwable $th) {
         $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     } finally {
+        $_SESSION["data"] = $data;
+        $_SESSION["gols_local"] = $gols_local;
+        $_SESSION["gols_visitant"] = $gols_visitant;
         header("Location: ../vista/crear_partit.php");
         exit();
     }
