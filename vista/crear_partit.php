@@ -8,20 +8,8 @@ if (isset($_GET['netejar'])) {
     $_SESSION = array();  // Neteja totes les variables de la sessió.
 }
 
-// Comprova si s'està editant i estableix l'atribut readonly
-$edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està editant, estableix l'atribut readonly per evitar canvis.
-
-// Funció per obtenir el nom de l'equip a partir de la seva ID
-function getTeamName($conn, $id) {
-    $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt->fetchColumn();
-}
-
-// Obtenim els noms dels equips per a mostrar-los
-$equip_local_name = isset($_SESSION['equip_local']) ? getTeamName($conn, $_SESSION['equip_local']) : '';
-$equip_visitant_name = isset($_SESSION['equip_visitant']) ? getTeamName($conn, $_SESSION['equip_visitant']) : '';
+// Comprova si s'està editant i estableix l'atribut $edit
+$edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està editant, estableix l'atribut $edit per evitar canvis.
 ?>
 
 <!DOCTYPE html>
@@ -62,11 +50,62 @@ $equip_visitant_name = isset($_SESSION['equip_visitant']) ? getTeamName($conn, $
             <label for="id">ID del Partit (només per editar):</label>
             <input type="text" id="id" name="id" class="input-field" placeholder="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>" <?php echo $edit ?>> <!-- Input per l'ID del partit, només editable si no s'està editant. -->
 
-            <label for="equip_local">Equip Local:</label>
-            <input type="text" id="equip_local" name="equip_local" class="input-field" value="<?php echo $equip_local_name; ?>" placeholder="Escriu el nom de l'equip local" readonly> <!-- Input per l'equip local, només lectura. -->
+            <?php if ($_SESSION['editant']) { ?>
+                <label for="equip_local">Equip Local:</label>
+                <input type="text" id="equip_local" name="equip_local" class="input-field" value="<?php echo $_SESSION['equip_local']; ?>" placeholder="Escriu el nom de l'equip local" <?php echo $edit ?>> <!-- Input per l'equip local, només lectura. -->
 
-            <label for="equip_visitant">Equip Visitant:</label>
-            <input type="text" id="equip_visitant" name="equip_visitant" class="input-field" value="<?php echo $equip_visitant_name; ?>" placeholder="Escriu el nom de l'equip visitant" readonly> <!-- Input per l'equip visitant, només lectura. -->
+                <label for="equip_visitant">Equip Visitant:</label>
+                <input type="text" id="equip_visitant" name="equip_visitant" class="input-field" value="<?php echo $_SESSION['equip_visitant']; ?>" placeholder="Escriu el nom de l'equip visitant" <?php echo $edit ?>> <!-- Input per l'equip visitant, només lectura. -->
+            <?php } else { ?>
+                <label for="equip_local">Equip Local:</label>
+                <select id="equip_local" name="equip_local">
+                    <option value="">-- Selecciona un equip --</option>
+                    <option value="FC Barcelona">FC Barcelona</option>
+                    <option value="Real Madrid">Real Madrid</option>
+                    <option value="Atlético de Madrid">Atlético de Madrid</option>
+                    <option value="Sevilla FC">Sevilla FC</option>
+                    <option value="Valencia CF">Valencia CF</option>
+                    <option value="Villarreal CF">Villarreal CF</option>
+                    <option value="Athletic Club">Athletic Club</option>
+                    <option value="Real Sociedad">Real Sociedad</option>
+                    <option value="Real Betis">Real Betis</option>
+                    <option value="Rayo Vallecano">Rayo Vallecano</option>
+                    <option value="Celta de Vigo">Celta de Vigo</option>
+                    <option value="CA Osasuna">CA Osasuna</option>
+                    <option value="RCD Mallorca">RCD Mallorca</option>
+                    <option value="Girona FC">Girona FC</option>
+                    <option value="UD Almería">UD Almería</option>
+                    <option value="Getafe CF">Getafe CF</option>
+                    <option value="UD Las Palmas">UD Las Palmas</option>
+                    <option value="Deportivo Alavés">Deportivo Alavés</option>
+                    <option value="Granada CF">Granada CF</option>
+                </select>
+                <br>
+                <label for="equip_visitant">Equip Visitant:</label>
+                <select id="equip_visitant" name="equip_visitant">
+                    <option value="">-- Selecciona un equip --</option>
+                    <option value="FC Barcelona">FC Barcelona</option>
+                    <option value="Real Madrid">Real Madrid</option>
+                    <option value="Atlético de Madrid">Atlético de Madrid</option>
+                    <option value="Sevilla FC">Sevilla FC</option>
+                    <option value="Valencia CF">Valencia CF</option>
+                    <option value="Villarreal CF">Villarreal CF</option>
+                    <option value="Athletic Club">Athletic Club</option>
+                    <option value="Real Sociedad">Real Sociedad</option>
+                    <option value="Real Betis">Real Betis</option>
+                    <option value="Rayo Vallecano">Rayo Vallecano</option>
+                    <option value="Celta de Vigo">Celta de Vigo</option>
+                    <option value="CA Osasuna">CA Osasuna</option>
+                    <option value="RCD Mallorca">RCD Mallorca</option>
+                    <option value="Girona FC">Girona FC</option>
+                    <option value="UD Almería">UD Almería</option>
+                    <option value="Getafe CF">Getafe CF</option>
+                    <option value="UD Las Palmas">UD Las Palmas</option>
+                    <option value="Deportivo Alavés">Deportivo Alavés</option>
+                    <option value="Granada CF">Granada CF</option>
+                </select>
+                <br>
+            <?php } ?>
 
             <label for="data">Data del Partit:</label>
             <input type="date" id="data" name="data" class="input-field" value="<?php echo isset($_SESSION['data']) ? $_SESSION['data'] : ''; ?>"> <!-- Input per la data del partit. -->
@@ -77,8 +116,9 @@ $equip_visitant_name = isset($_SESSION['equip_visitant']) ? getTeamName($conn, $
             <label for="gols_visitant">Gols Visitant (Opcional):</label>
             <input type="number" id="gols_visitant" name="gols_visitant" class="input-field" value="<?php echo isset($_SESSION['gols_visitant']) ? $_SESSION['gols_visitant'] : ''; ?>"> <!-- Input per gols visitants, opcional. -->
 
-            <button type="submit" class="button">Guardar</button> <!-- Botó per guardar els canvis. -->
-            <button type="submit" name="netejar" class="button">Netejar</button> <!-- Botó per netejar els camps del formulari. -->
+            <button type="submit" class="btn-submit">Guardar</button> <!-- Botó per guardar els canvis. -->
+            <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Botó per netejar els camps del formulari. -->
+
         </form>
     </div>
 </body>

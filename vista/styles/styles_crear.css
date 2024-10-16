@@ -58,9 +58,10 @@ textarea.input-field {
     resize: none;
 }
 
-/* Botón de envío */
+
+/* Botón de envío (Guardar) */
 .btn-submit {
-    background-color: #007bff;
+    background-color: #4CAF50;
     color: white;
     padding: 10px 15px;
     font-size: 16px;
@@ -68,10 +69,28 @@ textarea.input-field {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 10px;
 }
 
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
+}
+
+/* Botón "Netejar" */
+.btn-clear {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-clear:hover {
+    background-color: #e53935;
 }
 
 /* Botón "Tornar" */
@@ -168,7 +187,7 @@ input[readonly] {
         font-size: 14px;
     }
 
-    .btn-submit {
+    .btn-submit, .btn-clear {
         font-size: 14px;
         padding: 8px;
     }

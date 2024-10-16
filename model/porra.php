@@ -65,6 +65,21 @@ function consultarPartido($conn, $id) {
     return $stmt; // Retorna el statement per a futures manipulacions
 }
 
+function getTeamName($conn, $id) {
+    $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+function getTeamID($conn, $nom) {
+    $stmt = $conn->prepare("SELECT id FROM equips WHERE nom = :nom");
+    $stmt->bindParam(':nom', $nom);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+
 /* 
 function update($conn, $id, $nombre, $descripcion) {
     $sql = "UPDATE articles SET titol = :nombre, cos = :descripcion WHERE id = :id";

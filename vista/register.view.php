@@ -46,6 +46,6 @@
         <input type="submit" value="Enregistrar-se">
     </form>
 
-    <a href="index.php">Tornar a la pàgina principal</a>
+    <a href="../index.php">Tornar a la pàgina principal</a>
 </body>
 </html>

@@ -48,9 +48,16 @@ if ($conn) {
         $partit = $resultat->fetch(PDO::FETCH_ASSOC);
 
         if ($partit) {
-            $_SESSION['equip_local'] = $partit['equip_local_id']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
-            $_SESSION['equip_visitant'] = $partit['equip_visitant_id']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
-            $_SESSION['data'] = $partit['data']; // Corregido: Asegurarse de que el campo que se obtiene es el correcto
+            // Obtenim els noms dels equips per a mostrar-los
+            $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
+            $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
+
+            $_SESSION['equip_local'] = $equip_local_name;
+            $_SESSION['equip_visitant'] = $equip_visitant_name;
+            $_SESSION['data'] = $partit['data'];
+            $_SESSION['gols_local'] = $partit['gols_local'];
+            $_SESSION['gols_visitant'] = $partit['gols_visitant'];
+            $_SESSION['jugat'] = $partit['jugat'];
             $_SESSION["id"] = $id;
             $_SESSION['editant'] = true;
 
@@ -71,6 +78,22 @@ if ($conn) {
         $_SESSION["gols_visitant"] = $gols_visitant;
         $_SESSION['errors'] = $missatgesError;
 
+        header("Location: ../vista/crear_partit.php");
+        exit();
+    }
+
+    $equip_local = getTeamID($conn, $equip_local);
+    $equip_visitant = getTeamID($conn, $equip_visitant);
+    try {
+        $data = DateTime::createFromFormat('d/m/Y', $data);
+        if ($data) {
+            $data = $data->format('Y-m-d'); // Convierte a YYYY-MM-DD
+        } else {
+            $missatgesError[] = 'El format de la data no és vàlid';
+            $error = true;
+        }
+    } catch (\Throwable $th) {
+        $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
         header("Location: ../vista/crear_partit.php");
         exit();
     }
