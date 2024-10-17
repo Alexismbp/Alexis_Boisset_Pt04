@@ -58,6 +58,23 @@ textarea.input-field {
     resize: none;
 }
 
+select.input-field {
+    background-color: #fff;
+    appearance: none;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMCAxMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIj48cGF0aCBkPSJNNSAxMGwtNS01Ljc3IDEuNDQtMS40NEw1IDYuMTggOS4zNiAyLjc5TDEwIDMuOWwtNSA1eiIgZmlsbD0iIzAwN2JmZiIvPjwvc3ZnPg==');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+select:focus {
+    border-color: #007bff;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
 
 /* Botón de envío (Guardar) */
 .btn-submit {

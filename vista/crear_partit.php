@@ -58,7 +58,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
                 <input type="text" id="equip_visitant" name="equip_visitant" class="input-field" value="<?php echo $_SESSION['equip_visitant']; ?>" placeholder="Escriu el nom de l'equip visitant" <?php echo $edit ?>> <!-- Input per l'equip visitant, només lectura. -->
             <?php } else { ?>
                 <label for="equip_local">Equip Local:</label>
-                <select id="equip_local" name="equip_local">
+                <select id="equip_local" name="equip_local" class="input-field">
                     <option value="">-- Selecciona un equip --</option>
                     <option value="FC Barcelona">FC Barcelona</option>
                     <option value="Real Madrid">Real Madrid</option>
@@ -80,9 +80,9 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
                     <option value="Deportivo Alavés">Deportivo Alavés</option>
                     <option value="Granada CF">Granada CF</option>
                 </select>
-                <br>
+
                 <label for="equip_visitant">Equip Visitant:</label>
-                <select id="equip_visitant" name="equip_visitant">
+                <select id="equip_visitant" name="equip_visitant" class="input-field">
                     <option value="">-- Selecciona un equip --</option>
                     <option value="FC Barcelona">FC Barcelona</option>
                     <option value="Real Madrid">Real Madrid</option>
@@ -104,7 +104,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
                     <option value="Deportivo Alavés">Deportivo Alavés</option>
                     <option value="Granada CF">Granada CF</option>
                 </select>
-                <br>
+
             <?php } ?>
 
             <label for="data">Data del Partit:</label>
@@ -118,7 +118,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
 
             <button type="submit" class="btn-submit">Guardar</button> <!-- Botó per guardar els canvis. -->
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Botó per netejar els camps del formulari. -->
-
+            <a href="../index.php" class="btn-back">Tornar enrere</a> <!-- Botó per tornar a index.php -->
         </form>
     </div>
 </body>
