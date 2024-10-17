@@ -11,7 +11,7 @@ try {
     die("Error de connexió: " . $e->getMessage());
 }
 
-if ($conn) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     // Obtenim i netegem les dades del formulari
     $id = trim($_POST["id"] ?? null);
     $equip_local = trim($_POST["equip_local"]);

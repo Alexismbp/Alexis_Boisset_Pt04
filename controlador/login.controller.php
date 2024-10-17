@@ -1,22 +1,44 @@
 <?php
 // Alexis Boisset
+try {
+    session_start();
 
-session_start();
+    require "../model/db_conn.php";
+    require "../model/user_model.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Aquí iría la lógica para autenticar al usuario.
-    // Comprobar credenciales y redirigir si son correctas.
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    
-    // Ejemplo sencillo para simular autenticación (en un proyecto real, verifica con la base de datos).
-    if ($username === 'alexis' && $password === 'password123') {
-        $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $username;
-        header("Location: index.php");
-        exit();
-    } else {
-        $error = "Credencials incorrectes.";
+    $conn = connect();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
+
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        /* $email = "alexismarcbp@gmail.com";
+        $password = "admin"; */
+
+        if ($userData = getUserData($email)) {
+
+            $nomUsuari = $userData['nom_usuari'];
+            $hashedPassword = $userData['contrasenya'];
+
+            if (hash_equals(hash('sha256', $password), $hashedPassword)) {
+                $_SESSION['loggedin'] = true;
+                $_SESSION['username'] = $nomUsuari;
+                header("Location: ../index.php");
+                exit();
+
+                
+            } else {
+                $_SESSION['failure'] = "La contrasenya no es correcta";
+            }
+        } else {
+            $_SESSION['failure'] = "L'usuari no existeix a la base de dades";
+        }
     }
+} catch (\Throwable $th) {
+    $_SESSION['failure'] = "Error: " . $th->getMessage();
+
+} finally {
+    header("Location: ../vista/login.vista.php");
+    exit();
 }
-?>
