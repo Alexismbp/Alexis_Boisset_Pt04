@@ -7,7 +7,6 @@ require "../model/db_conn.php"; // Inclou la classe Database per a la connexió
 function solicitudRows()
 {
     try {
-        $database = new Database();
         $conn = $database->connect(); // Crea una connexió a la base de dades
     } catch (PDOException $e) {
         die("Error de connexió: " . $e->getMessage());
