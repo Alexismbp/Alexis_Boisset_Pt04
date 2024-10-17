@@ -1,1 +1,0 @@
-Consultas al model desde la vista (index.php)
