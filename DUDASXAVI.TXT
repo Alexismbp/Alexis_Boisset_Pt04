@@ -1,8 +1,11 @@
 Consultas al model desde la vista (index.php)
 Con solo utilizar las cookies en el mantener la sesion activa ya vale?
+La tematica sirve? No busca por autor si no por equipo favorito,
+varios usuarios pueden tener la misma pagina principal.
 
 
 
+<!---->
 Que cuando me loguee salga al lado del articulo dos botones. Uno para modificar y el otro para eliminar.
 El de modificar me lleva al formulario de crear pero con los datos previamente puestos que se mandan
 al pulsar el boton que esta al lado del articulo, cada articulo tendra su boton. El boton de eliminar
