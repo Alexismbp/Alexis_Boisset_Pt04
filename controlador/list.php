@@ -2,19 +2,22 @@
 // Alexis Boisset
 
 require "../model/db_conn.php"; // Inclou la classe Database per a la connexió
+require "../model/porra.php";
 
-// Funció per obtenir totes les files d'articles
+solicitudRows();
+// Funció per obtenir totes les files d'partits$partits
 function solicitudRows()
 {
+    $id = 1;
     try {
-        $conn = $database->connect(); // Crea una connexió a la base de dades
+        $conn = connect();
     } catch (PDOException $e) {
         die("Error de connexió: " . $e->getMessage());
     }
-    $articles = $database->allArticles($conn); // Recupera totes les files d'articles
-    if (empty($articles)) {
+    $partits = consultarPartido($conn, $id); // Recupera totes les files d'partits$partits
+    if (empty($partits)) {
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
-    return $articles; // Retorna les files obtingudes
+    return $partits->fetch(PDO::FETCH_ASSOC); // Retorna les files obtingudes
 }
