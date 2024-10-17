@@ -42,7 +42,6 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $stmt->bindValue(':limit', $partitsPerPage, PDO::PARAM_INT); // Vincula el límit de resultats.
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT); // Vincula l'offset.
 
-    var_dump($equipFavorit, $partitsPerPage, $offset);
 }
 
 // Executem la consulta

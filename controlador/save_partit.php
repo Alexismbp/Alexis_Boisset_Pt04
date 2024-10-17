@@ -108,10 +108,8 @@ if ($conn) {
     try {
         if ($resultat->execute()) {
             $_SESSION['success'] = "El partit s'ha inserit correctament!";
-        } else {
-            $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
         }
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
         $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     } finally {
         $_SESSION["data"] = $data;

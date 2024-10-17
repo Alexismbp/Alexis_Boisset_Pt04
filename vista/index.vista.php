@@ -16,7 +16,7 @@
     <?php else: ?>
         <!-- Mensaje cuando el usuario ya está logado -->
         <p>Benvingut, <?php echo $_SESSION['username']; ?>!</p>
-        <a href="logout.php" class="btn-logout">Tancar sessió</a>
+        <a href="./controlador/logout.php" class="btn-logout">Tancar sessió</a>
     <?php endif; ?>
 </header>
 
@@ -35,12 +35,6 @@
         <div class="partits">
             <?php foreach ($partits as $partit): ?>
                 <div class="partit">
-                    <?php
-                    // Obtenemos los nombres de los equipos locales y visitantes usando sus IDs
-                    /* $equip_local_nom = getTeamName($conn, $partit['equip_local_id']);
-                    $equip_visitant_nom = getTeamName($conn, $partit['equip_visitant_id']); */
-                    ?>
-
                     <h3><?php echo htmlspecialchars($partit['equip_local']) . " vs " . htmlspecialchars($partit['equip_visitant']); ?></h3>
 
                     <?php if ($partit['jugat']): ?>

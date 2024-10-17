@@ -1,30 +1,75 @@
 <?php
 // Alexis Boisset
-session_start();
+try {
+    session_start();
 
-require '../model/user_model.php';
+    require '../model/user_model.php';
 
-FALTA AÑADIR EQUIPO PARA INSERTAR EN BASE DE DATOS
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // $_SERVER['REQUEST_METHOD'] === 'POST' && 
 
-    $username = validate($_POST['username']);
-    $password = validate($_POST['password']);
-    $email = validate($_POST['email']);
+    if ($conn = connect()) {
 
-    if (registerUser($username, $email, $password)) {
+        $username = validate($_POST['username']);
+        $password = validate($_POST['password']);
+        $passwordConfirm = validate($_POST['password_confirm']);
+        $email = validate($_POST['email']);
+        $equipFavorit = validate($_POST['equip']);
+        $missatgesError = [];
+        $error = false;
 
-        $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $username;
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit();
+        if (empty($username)) {
+            $missatgesError[] = "El nom d'usuari no pot estar buit";
+            $error = true;
+        }
+
+        if (empty($password)) {
+            $missatgesError[] = "Es obligatori una contrasenya";
+            $error = true;
+        }
+
+        if (empty($email)) {
+            $missatgesError[] = "Es obligatori un correu electrònic";
+            $error = true;
+        }
+
+        if (empty($equipFavorit)) {
+            $missatgesError[] = "Es obligatori una contrasenya";
+            $error = true;
+        }
+
+
+        if (!$password === $passwordConfirm) {
+            $missatgesError[] = "Les contrasenyes no coincideixen";
+            $error = true;
+        }
+
+        if ($error) {
+            $_SESSION['errors'] = $missatgesError;
+            header("Location: ../vista/register.view.php");
+            exit();
+        }
+
+
+        if (registerUser($username, $email, $password, $equipFavorit)) {
+
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['success'] = "Usuari registrat correctament";
+        }
     }
-
+} catch (Throwable $th) {
+    $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
+} finally {
+    header("Location: ../vista/register.view.php");
+    exit();
 }
 
-function validate ($data) {
+function validate($data)
+{
     trim($data);
     htmlspecialchars($data);
     stripslashes($data);
     filter_var($data);
-}
 
+    return $data;
+}
