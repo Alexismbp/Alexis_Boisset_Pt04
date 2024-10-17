@@ -1,28 +1,7 @@
 <?php
 // Alexis Boisset
 
-/* Funció que serveix per a omplenar les diferències que hi ha entre les ID d'una fila a una altra. */
-function ultimaIdDisponible($conn)
-{
-    $contador = 1;
 
-    $query = "SELECT id FROM usuaris";
-    $allId = $conn->prepare($query);
-
-    $allId->execute();
-
-    // Fetching IDs into an array
-    $idDisponible = $allId->fetchAll(PDO::FETCH_COLUMN, 0);
-
-    foreach ($idDisponible as $idActual) {
-        if ($contador != $idActual) {
-            return $contador; // Retorna l'ID disponible si no coincideix
-        }
-        $contador++;
-    }
-
-    return $contador; // Retorna el contador si no hi ha buits
-}
 
 function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante) {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;

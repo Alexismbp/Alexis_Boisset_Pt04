@@ -5,8 +5,7 @@ $dbname = "Pt04_Alexis_Boisset";  // Nom de la base de dades
 $username = "root";  // Nom d'usuari MySQL
 $password = "";  // Contrasenya MySQL
 
-
-// DSN correctament formatat
+// Funció per connectar
 function connect()
 {
     try {

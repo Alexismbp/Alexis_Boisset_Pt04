@@ -11,11 +11,21 @@ try {
 
         $username = validate($_POST['username']);
         $password = validate($_POST['password']);
+        $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
         $passwordConfirm = validate($_POST['password_confirm']);
         $email = validate($_POST['email']);
         $equipFavorit = validate($_POST['equip']);
         $missatgesError = [];
         $error = false;
+
+        /* $username = "Marcos";
+        $password = "admin";
+        $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
+        $passwordConfirm = "admin";
+        $email = "m.lopez@sapalomera.cat";
+        $equipFavorit = "Sevilla FC";
+        $missatgesError = [];
+        $error = false; */
 
         if (empty($username)) {
             $missatgesError[] = "El nom d'usuari no pot estar buit";
@@ -24,6 +34,9 @@ try {
 
         if (empty($password)) {
             $missatgesError[] = "Es obligatori una contrasenya";
+            $error = true;
+        } elseif (preg_match($passwordPattern, $password) === 0) {
+            $missatgesError[] = "La contrasenya ha de tenir mínim: 8 caràcters, una majuscula, una minuscula y un digit";
             $error = true;
         }
 
@@ -45,6 +58,9 @@ try {
 
         if ($error) {
             $_SESSION['errors'] = $missatgesError;
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+            $_SESSION['equip'] = $equipFavorit;
             header("Location: ../vista/register.view.php");
             exit();
         }
@@ -55,6 +71,8 @@ try {
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $username;
             $_SESSION['success'] = "Usuari registrat correctament";
+            header("Location: ../index.php");
+            exit();
         }
     }
 } catch (Throwable $th) {

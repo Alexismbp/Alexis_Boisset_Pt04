@@ -20,7 +20,8 @@ function registerUser($username, $email, $password, $equipFavorit)
     $hashedPassword = hash('sha256', $password);
 
     // Insertar el nuevo usuario
-    $insertQuery = $conn->prepare("INSERT INTO usuaris (nom_usuari, correu_electronic, contrasenya, equip_favorit) VALUES (:username, :email, :password, :team)");
+    $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) VALUES (:id, :username, :email, :password, :team)");
+    $insertQuery->bindParam(':id', ultimaIdDisponible());
     $insertQuery->bindParam(':username', $username);
     $insertQuery->bindParam(':email', $email);
     $insertQuery->bindParam(':password', $hashedPassword);
@@ -47,4 +48,29 @@ function getUserData($email)
     } else {
         return false;
     }
+}
+
+/* Funció que serveix per a omplenar les diferències que hi ha entre les ID d'una fila a una altra. */
+function ultimaIdDisponible()
+{
+    global $conn;
+    
+    $contador = 1;
+
+    $query = "SELECT id FROM usuaris";
+    $allId = $conn->prepare($query);
+
+    $allId->execute();
+
+    // Fetching IDs into an array
+    $idDisponible = $allId->fetchAll(PDO::FETCH_COLUMN, 0);
+
+    foreach ($idDisponible as $idActual) {
+        if ($contador != $idActual) {
+            return $contador; // Retorna l'ID disponible si no coincideix
+        }
+        $contador++;
+    }
+
+    return $contador; // Retorna el contador si no hi ha buits
 }
