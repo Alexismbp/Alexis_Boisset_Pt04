@@ -21,14 +21,15 @@
 </header>
 
 <body>
-    <h1>Gestió de partits</h1>
-    <ul>
-        <!-- Enllaços per a gestionar els partits -->
-        <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
-        <li><a href="vista/llistar.php">Consultar partits</a></li>
-        <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
-    </ul>
-
+    <h1>Llista de partits</h1>
+    <?php if ($_SESSION['loggedin']) { ?>
+        <ul>
+            <!-- Enllaços per a gestionar els partits -->
+            <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
+            <li><a href="vista/llistar.php">Consultar partits</a></li>
+            <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
+        </ul>
+    <?php } ?>
     <!-- Mostra els partits paginats -->
     <h2>Llista de partits</h2>
     <?php if (count($partits) > 0): ?>
@@ -67,7 +68,8 @@
 
 <?php
 // Función para obtener el nombre del equipo a partir de su ID
-function getTeamName($conn, $equip_id) {
+function getTeamName($conn, $equip_id)
+{
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
     $stmt->bindParam(':id', $equip_id, PDO::PARAM_INT);
     $stmt->execute();

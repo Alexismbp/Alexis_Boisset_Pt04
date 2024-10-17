@@ -5,9 +5,7 @@ try {
 
     require '../model/user_model.php';
 
-    // $_SERVER['REQUEST_METHOD'] === 'POST' && 
-
-    if ($conn = connect()) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 
         $username = validate($_POST['username']);
         $password = validate($_POST['password']);
@@ -18,7 +16,7 @@ try {
         $missatgesError = [];
         $error = false;
 
-        /* $username = "Marcos";
+        /* $username = "";
         $password = "admin";
         $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
         $passwordConfirm = "admin";
@@ -57,12 +55,8 @@ try {
         }
 
         if ($error) {
-            $_SESSION['errors'] = $missatgesError;
-            $_SESSION['username'] = $username;
-            $_SESSION['email'] = $email;
-            $_SESSION['equip'] = $equipFavorit;
-            header("Location: ../vista/register.view.php");
-            exit();
+            throw new Exception();
+            
         }
 
 
@@ -73,10 +67,17 @@ try {
             $_SESSION['success'] = "Usuari registrat correctament";
             header("Location: ../index.php");
             exit();
+        } else {
+            $missatgesError[] = "Aquest correu electrònic ja s'està utilitzant";
+            throw new Exception();
         }
     }
 } catch (Throwable $th) {
     $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
+    $_SESSION['errors'] = $missatgesError;
+    $_SESSION['username'] = $username;
+    $_SESSION['email'] = $email;
+    $_SESSION['equip'] = $equipFavorit;
 } finally {
     header("Location: ../vista/register.view.php");
     exit();
