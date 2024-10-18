@@ -49,8 +49,8 @@ function consultarPartido($conn, $id = '')
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $id);
     }
-
-    return $stmt->execute(); // Retorna el statement per a futures manipulacions
+    $stmt->execute();
+    return $stmt; // Retorna el statement per a futures manipulacions
 }
 
 function getTeamName($conn, $id)

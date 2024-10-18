@@ -3,6 +3,10 @@ Con solo utilizar las cookies en el mantener la sesion activa ya vale?
 La tematica sirve? No busca por autor si no por equipo favorito,
 varios usuarios pueden tener la misma pagina principal.
 
+Preguntar que le parece el config.php como controlador a parte y hacer un require del mismo en cada pagina.
+Que le parece el define('BASE_URL'), como lo pondría el.
+Que le parece la manera del session_maxlifetime.
+
 
 
 <!---->
@@ -26,3 +30,5 @@ Proteccion para que una persona que ponga en la URL que solo este disponible par
 utilizar: if ($_SESSION['loggedin]) //code else header Location login.view.php.
 
 https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes
+
+""""""""""""""""""ME FALTAN LAS COOKIES""""""""""""""""""

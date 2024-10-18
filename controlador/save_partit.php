@@ -22,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     $missatgesError = [];
     $error = false;
 
+
     /* $_SESSION['id'] = 6;
-    //$id = ;
+    $id = ;
     $equip_local = "FC Barcelona";
     $equip_visitant = "Atlético de Madrid";
     $data = trim("17/10/2024");
