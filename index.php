@@ -21,7 +21,7 @@ $offset = ($page - 1) * $partitsPerPage; // Calcula l'offset per a la consulta e
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     // Si l'usuari està logat, només mostra partits del seu equip favorit
     $equipFavorit = $_SESSION['equip']; 
-    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant
+    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
             FROM partits p
             JOIN equips e_local ON p.equip_local_id = e_local.id
             JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
@@ -33,7 +33,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT); // Vincula l'offset.
 } else {
     // Si no està logat, mostra tots els partits
-    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant
+    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
             FROM partits p
             JOIN equips e_local ON p.equip_local_id = e_local.id
             JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id

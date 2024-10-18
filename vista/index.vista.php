@@ -21,7 +21,7 @@
 </header>
 
 <body>
-    <h1>Llista de partits</h1>
+    <h1>Partits de LaLliga</h1>
     <?php if ($_SESSION['loggedin']) { ?>
         <ul>
             <!-- Enllaços per a gestionar els partits -->
@@ -60,19 +60,8 @@
             <?php endif; ?>
         </div>
     <?php else: ?>
-        <p>No hi ha partits disponibles.</p>
+        <p class="partit">No hi ha partits disponibles.</p>
     <?php endif; ?>
 </body>
 
 </html>
-
-<?php
-// Función para obtener el nombre del equipo a partir de su ID
-function getTeamName($conn, $equip_id)
-{
-    $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
-    $stmt->bindParam(':id', $equip_id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchColumn(); // Devuelve el nombre del equipo
-}
-?>

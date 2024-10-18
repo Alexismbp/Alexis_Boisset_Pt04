@@ -3,7 +3,8 @@
 
 
 
-function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante) {
+function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
+{
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat) 
             VALUES (:equipo_local_id, :equipo_visitante_id, :fecha, :goles_local, :goles_visitante, :jugado)";
@@ -18,7 +19,8 @@ function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $g
     return $stmt; // Retorna el statement per executar-lo després
 }
 
-function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante) {
+function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
+{
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
     $sql = "UPDATE partits 
             SET equip_local_id = :equipo_local_id, equip_visitant_id = :equipo_visitante_id, data = :fecha, 
@@ -36,22 +38,31 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
     return $stmt; // Retorna el statement per executar-lo després
 }
 
-function consultarPartido($conn, $id) {
-    $sql = "SELECT * FROM partits WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    return $stmt; // Retorna el statement per a futures manipulacions
+// Creo un optional parameter per si utilitzo la funció sense passar un valor d'ID, serveix per reutilitzar la funció en controlador/list.php
+function consultarPartido($conn, $id = '')
+{
+    if (empty($id)) {
+        $sql = "SELECT * FROM partits";
+        $stmt = $conn->prepare($sql);
+    } else {
+        $sql = "SELECT * FROM partits WHERE id = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+    }
+
+    return $stmt->execute(); // Retorna el statement per a futures manipulacions
 }
 
-function getTeamName($conn, $id) {
+function getTeamName($conn, $id)
+{
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     return $stmt->fetchColumn();
 }
 
-function getTeamID($conn, $nom) {
+function getTeamID($conn, $nom)
+{
     $stmt = $conn->prepare("SELECT id FROM equips WHERE nom = :nom");
     $stmt->bindParam(':nom', $nom);
     $stmt->execute();
