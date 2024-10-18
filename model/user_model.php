@@ -1,10 +1,9 @@
 <?php
+// Alexis Boisset
 // user_model.php
-require_once 'db_conn.php';
 
-function registerUser($username, $email, $password, $equipFavorit)
+function registerUser($username, $email, $password, $equipFavorit, $conn)
 {
-    $conn = connect();
 
     // Validar si el usuario ya existe
     $query = $conn->prepare("SELECT * FROM usuaris WHERE correu_electronic = :email");
@@ -30,10 +29,10 @@ function registerUser($username, $email, $password, $equipFavorit)
     return $insertQuery->execute();
 }
 
-function getUserData($email)
+function getUserData($email,$conn)
 {
     // Preparo la consulta
-     $conn;
+    $conn;
     $sql = $conn->prepare("SELECT correu_electronic FROM usuaris WHERE correu_electronic = :email");
     $sql->bindParam(':email', $email);
     $sql->execute();

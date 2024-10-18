@@ -8,15 +8,15 @@ try {
 
     $conn = connect();
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
+    // if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        /* $email = $_POST['email'];
+        $password = $_POST['password']; */
 
-        /* $email = "alexismarcbp@gmail.com";
-        $password = "admin"; */
+        $email = "alexismarcbp@gmail.com";
+        $password = "admin";
 
-        if ($userData = getUserData($email)) {
+        if ($userData = getUserData($email, $conn)) {
 
             $nomUsuari = $userData['nom_usuari'];
             $hashedPassword = $userData['contrasenya'];
@@ -36,7 +36,7 @@ try {
         } else {
             $_SESSION['failure'] = "L'usuari no existeix a la base de dades";
         }
-    }
+    //}
 } catch (\Throwable $th) {
     $_SESSION['failure'] = "Error: " . $th->getMessage();
 

@@ -3,9 +3,10 @@
 try {
     session_start();
 
+    require '../model/db_conn.php';
     require '../model/user_model.php';
 
-    //if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 
         $nomUsuari = validate($_POST['username']);
         $contrasenya = validate($_POST['password']);
@@ -60,10 +61,11 @@ try {
         }
 
 
-        if (registerUser($nomUsuari, $email, $contrasenya, $equipFavorit)) {
+        if (registerUser($nomUsuari, $email, $contrasenya, $equipFavorit, $conn)) {
 
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $nomUsuari;
+            $_SESSION['equip'] = $equipFavorit;
             $_SESSION['success'] = "Usuari registrat correctament";
             header("Location: ../index.php");
             exit();
@@ -71,7 +73,7 @@ try {
             $missatgesError[] = "Aquest correu electrònic ja s'està utilitzant";
             throw new Exception();
         }
-    //}
+    }
 } catch (Throwable $th) {
     $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     $_SESSION['errors'] = $missatgesError;
