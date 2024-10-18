@@ -32,21 +32,24 @@ function registerUser($username, $email, $password, $equipFavorit)
 
 function getUserData($email)
 {
+    // Preparo la consulta
     global $conn;
     $sql = $conn->prepare("SELECT correu_electronic FROM usuaris WHERE correu_electronic = :email");
     $sql->bindParam(':email', $email);
     $sql->execute();
     $dbEmail = $sql->fetch(PDO::FETCH_ASSOC);
 
+    // Si el correu electronic existeix, agafa dades de l'usuari que son necessaries pel correcte funcionament de la Web
     if ($dbEmail['correu_electronic'] === $email) {
-        $sql = $conn->prepare("SELECT nom_usuari, contrasenya FROM usuaris WHERE correu_electronic = :email");
-        $sql->bindParam(':email', $email);
+
+        $sql = $conn->prepare("SELECT nom_usuari, equip_favorit, contrasenya FROM usuaris WHERE correu_electronic = :email");
+        $sql->bindParam(':email', $email); // Busquem per clau primaria únicament
 
         $sql->execute();
-        $hashedPassword = $sql->fetch(PDO::FETCH_ASSOC);
-        return $hashedPassword;
+        $userData = $sql->fetch(PDO::FETCH_ASSOC); // Array associatiu per poder extreure les dades fàcilment per nom de columna
+        return $userData; // Retornem la informació
     } else {
-        return false;
+        return false; // El correu electrònic no consta a la base de dades
     }
 }
 
@@ -54,7 +57,7 @@ function getUserData($email)
 function ultimaIdDisponible()
 {
     global $conn;
-    
+
     $contador = 1;
 
     $query = "SELECT id FROM usuaris";

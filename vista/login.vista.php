@@ -29,7 +29,7 @@ session_start();
             ?>
 
             <label for="email">Correu electrònic:</label>
-            <input type="text" id="email" name="email" class="input-field" required>
+            <input type="email" id="email" name="email" class="input-field" required>
 
             <label for="password">Contrasenya:</label>
             <input type="password" id="password" name="password" class="input-field" required>

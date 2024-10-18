@@ -20,10 +20,12 @@ try {
 
             $nomUsuari = $userData['nom_usuari'];
             $hashedPassword = $userData['contrasenya'];
+            $equip = $userData['equip_favorit'];
 
             if (hash_equals(hash('sha256', $password), $hashedPassword)) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $nomUsuari;
+                $_SESSION['equip'] = $equip;
                 header("Location: ../index.php");
                 exit();
 
