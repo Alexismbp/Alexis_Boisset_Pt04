@@ -49,8 +49,8 @@
                             // require controlador/save_partit.php
                             // require controlador/porra.php (PARA EL DELETE) FACTIBLE?
                             ?>
-                     <a href="vista/crear_partit.php?id=" <?php echo $partit['id']?>>Editar Partit</a>
-                     <a href="vista/crear_partit.php?id=" <?php echo $partit['id']?>>Eliminar Partit</a>
+                     <a href="vista/crear_partit.php?id=" <?php echo htmlspecialchars($partit['id'])?>>Editar Partit</a>
+                     <a href="vista/crear_partit.php?id=" <?php echo htmlspecialchars($partit['id'])?>>Eliminar Partit</a>
                      
                      <?php endif ?>
 
