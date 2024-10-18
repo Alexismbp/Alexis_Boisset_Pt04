@@ -19,3 +19,7 @@ Delete.php (esborrar, porque lo tendre al lado de cada articulo).
 El crear.php lo dejo pero no se donde lo pondré en el disenyo
 
 Estos botones estaran solo activos si el usuario esta logueado.
+
+funcion SESSION GC-LIFETIME
+
+https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes

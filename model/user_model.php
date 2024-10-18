@@ -4,7 +4,7 @@ require_once 'db_conn.php';
 
 function registerUser($username, $email, $password, $equipFavorit)
 {
-    global $conn;
+    $conn = connect();
 
     // Validar si el usuario ya existe
     $query = $conn->prepare("SELECT * FROM usuaris WHERE correu_electronic = :email");
@@ -21,7 +21,7 @@ function registerUser($username, $email, $password, $equipFavorit)
 
     // Insertar el nuevo usuario
     $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) VALUES (:id, :username, :email, :password, :team)");
-    $insertQuery->bindParam(':id', ultimaIdDisponible());
+    $insertQuery->bindParam(':id', ultimaIdDisponible($conn));
     $insertQuery->bindParam(':username', $username);
     $insertQuery->bindParam(':email', $email);
     $insertQuery->bindParam(':password', $hashedPassword);
@@ -33,7 +33,7 @@ function registerUser($username, $email, $password, $equipFavorit)
 function getUserData($email)
 {
     // Preparo la consulta
-    global $conn;
+     $conn;
     $sql = $conn->prepare("SELECT correu_electronic FROM usuaris WHERE correu_electronic = :email");
     $sql->bindParam(':email', $email);
     $sql->execute();
@@ -54,13 +54,12 @@ function getUserData($email)
 }
 
 /* Funció que serveix per a omplenar les diferències que hi ha entre les ID d'una fila a una altra. */
-function ultimaIdDisponible()
+function ultimaIdDisponible($conn)
 {
-    global $conn;
 
     $contador = 1;
 
-    $query = "SELECT id FROM usuaris";
+    $query = "SELECT id FROM usuaris ORDER BY id asc";
     $allId = $conn->prepare($query);
 
     $allId->execute();

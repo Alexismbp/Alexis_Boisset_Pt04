@@ -5,10 +5,10 @@ try {
 
     require '../model/user_model.php';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
+    //if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 
-        $username = validate($_POST['username']);
-        $password = validate($_POST['password']);
+        $nomUsuari = validate($_POST['username']);
+        $contrasenya = validate($_POST['password']);
         $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
         $passwordConfirm = validate($_POST['password_confirm']);
         $email = validate($_POST['email']);
@@ -16,24 +16,24 @@ try {
         $missatgesError = [];
         $error = false;
 
-        /* $username = "";
-        $password = "admin";
+        /* $nomUsuari = "Xavi Martin";
+        $contrasenya = "Admin123";
         $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
-        $passwordConfirm = "admin";
-        $email = "m.lopez@sapalomera.cat";
-        $equipFavorit = "Sevilla FC";
+        $passwordConfirm = "Admin123";
+        $email = "x.martin@sapalomera.cat";
+        $equipFavorit = "Rayo Vallecano";
         $missatgesError = [];
         $error = false; */
 
-        if (empty($username)) {
+        if (empty($nomUsuari)) {
             $missatgesError[] = "El nom d'usuari no pot estar buit";
             $error = true;
         }
 
-        if (empty($password)) {
+        if (empty($contrasenya)) {
             $missatgesError[] = "Es obligatori una contrasenya";
             $error = true;
-        } elseif (preg_match($passwordPattern, $password) === 0) {
+        } elseif (preg_match($passwordPattern, $contrasenya) === 0) {
             $missatgesError[] = "La contrasenya ha de tenir mínim: 8 caràcters, una majuscula, una minuscula y un digit";
             $error = true;
         }
@@ -44,12 +44,12 @@ try {
         }
 
         if (empty($equipFavorit)) {
-            $missatgesError[] = "Es obligatori una contrasenya";
+            $missatgesError[] = "Es obligatori un equip favorit";
             $error = true;
         }
 
 
-        if (!$password === $passwordConfirm) {
+        if (!$contrasenya === $passwordConfirm) {
             $missatgesError[] = "Les contrasenyes no coincideixen";
             $error = true;
         }
@@ -60,10 +60,10 @@ try {
         }
 
 
-        if (registerUser($username, $email, $password, $equipFavorit)) {
+        if (registerUser($nomUsuari, $email, $contrasenya, $equipFavorit)) {
 
             $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = $nomUsuari;
             $_SESSION['success'] = "Usuari registrat correctament";
             header("Location: ../index.php");
             exit();
@@ -71,11 +71,11 @@ try {
             $missatgesError[] = "Aquest correu electrònic ja s'està utilitzant";
             throw new Exception();
         }
-    }
+    //}
 } catch (Throwable $th) {
     $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
     $_SESSION['errors'] = $missatgesError;
-    $_SESSION['username'] = $username;
+    $_SESSION['username'] = $nomUsuari;
     $_SESSION['email'] = $email;
     $_SESSION['equip'] = $equipFavorit;
 } finally {
