@@ -3,9 +3,6 @@
 <?php
 session_start(); // Inicia la sessió per a gestionar l'autenticació i les dades de l'usuari.
 
-    /* $_SESSION['loggedin'] = true;
-    $_SESSION['equip'] = "Valencia CF";
- */
 require "./model/db_conn.php"; // Inclou el fitxer de connexió a la base de dades.
 
 $conn = connect(); // Estableix la connexió a la base de dades.
