@@ -13,8 +13,8 @@ try {
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $email = "alexismarcbp@gmail.com";
-        $password = "admin";
+        /* $email = "alexismarcbp@gmail.com";
+        $password = "admin"; */
 
         if ($userData = getUserData($email, $conn)) {
 
@@ -41,6 +41,7 @@ try {
     $_SESSION['failure'] = "Error: " . $th->getMessage();
 
 } finally {
+    $_SESSION['username'] = $nomUsuari;
     header("Location: ../vista/login.vista.php");
     exit();
 }

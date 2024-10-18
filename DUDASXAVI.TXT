@@ -22,4 +22,7 @@ Estos botones estaran solo activos si el usuario esta logueado.
 
 funcion SESSION GC-LIFETIME
 
+Proteccion para que una persona que ponga en la URL que solo este disponible para usuarios logueados no pueda entrar por URL
+utilizar: if ($_SESSION['loggedin]) //code else header Location login.view.php.
+
 https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-30-minutes

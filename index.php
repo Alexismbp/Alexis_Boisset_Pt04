@@ -4,6 +4,8 @@
 session_start(); // Inicia la sessió per a gestionar l'autenticació i les dades de l'usuari.
 
 require "./model/db_conn.php"; // Inclou el fitxer de connexió a la base de dades.
+/* $_SESSION['loggedin'] = true;
+$_SESSION['equip'] = "Valencia CF"; */
 
 $conn = connect(); // Estableix la connexió a la base de dades.
 
@@ -20,7 +22,7 @@ $offset = ($page - 1) * $partitsPerPage; // Calcula l'offset per a la consulta e
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     // Si l'usuari està logat, només mostra partits del seu equip favorit
     $equipFavorit = $_SESSION['equip']; 
-    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
+    $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
             FROM partits p
             JOIN equips e_local ON p.equip_local_id = e_local.id
             JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id

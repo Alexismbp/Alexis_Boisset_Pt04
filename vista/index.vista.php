@@ -22,14 +22,14 @@
 
 <body>
     <h1>Partits de LaLliga</h1>
-    <?php if ($_SESSION['loggedin']) { ?>
+    <?php if ($_SESSION['loggedin']) : ?>
         <ul>
             <!-- Enllaços per a gestionar els partits -->
             <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
-            <li><a href="vista/llistar.php">Consultar partits</a></li>
-            <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
+            <!-- <li><a href="vista/llistar.php">Consultar partits</a></li> -->
+            <!-- <li><a href="vista/eliminar.php">Eliminar un partit</a></li> -->
         </ul>
-    <?php } ?>
+    <?php endif ?>
     <!-- Mostra els partits paginats -->
     <h2>Llista de partits</h2>
     <?php if (count($partits) > 0): ?>
@@ -45,6 +45,15 @@
                         <!-- Si el partit encara no s'ha jugat, mostrar la data programada -->
                         <p>Partit programat per al: <?php echo date('d-m-Y', strtotime($partit['data'])); ?></p>
                     <?php endif; ?>
+                        <?php if ($_SESSION['loggedin']): 
+                            // require controlador/save_partit.php
+                            // require controlador/porra.php (PARA EL DELETE) FACTIBLE?
+                            ?>
+                     <a href="vista/crear_partit.php?id=" <?php echo $partit['id']?>>Editar Partit</a>
+                     <a href="vista/crear_partit.php?id=" <?php echo $partit['id']?>>Eliminar Partit</a>
+                     
+                     <?php endif ?>
+
                 </div>
             <?php endforeach; ?>
         </div>
