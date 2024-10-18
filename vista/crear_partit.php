@@ -2,6 +2,7 @@
 // Alexis Boisset
 
 session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
+require "../controlador/config.php"; // Detecció de temps d'inactivitat
 
 // Si s'ha fet click al boto "Netejar"
 if (isset($_GET['netejar'])) {

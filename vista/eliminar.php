@@ -1,3 +1,7 @@
+<?php
+session_start();
+require "../controlador/config.php"; // Detecció de temps d'inactivitat
+?>
 <!-- Alexis Boisset -->
 <!DOCTYPE html>
 <html lang="es">

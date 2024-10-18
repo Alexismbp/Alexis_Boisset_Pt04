@@ -45,14 +45,15 @@
                         <!-- Si el partit encara no s'ha jugat, mostrar la data programada -->
                         <p>Partit programat per al: <?php echo date('d-m-Y', strtotime($partit['data'])); ?></p>
                     <?php endif; ?>
-                        <?php if ($_SESSION['loggedin']): 
-                            // require controlador/save_partit.php
-                            // require controlador/porra.php (PARA EL DELETE) FACTIBLE?
-                            ?>
-                     <a href="vista/crear_partit.php?id=" <?php echo htmlspecialchars($partit['id'])?>>Editar Partit</a>
-                     <a href="vista/crear_partit.php?id=" <?php echo htmlspecialchars($partit['id'])?>>Eliminar Partit</a>
-                     
-                     <?php endif ?>
+
+                    <?php if ($_SESSION['loggedin']):
+                        // require controlador/save_partit.php
+                        // require "controlador/porra.php";
+                    ?>
+                        <a href="vista/crear_partit.php?id=<?php echo $partit['id']?>">Editar Partit</a>
+                        <a href="vista/eliminar.php?id=<?php echo $partit['id']?>">Eliminar Partit</a>
+
+                    <?php endif ?>
 
                 </div>
             <?php endforeach; ?>

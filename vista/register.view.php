@@ -1,6 +1,7 @@
 <!-- Alexis Boisset -->
 <?php
 session_start();
+require "../controlador/config.php"; // Detecció de temps d'inactivitat
 
 if (isset($_GET['netejar'])) {
     $_SESSION = array();  // Neteja totes les variables de la sessió.

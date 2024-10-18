@@ -2,10 +2,11 @@
 
 <?php
 session_start(); // Inicia la sessió per a gestionar l'autenticació i les dades de l'usuari.
+require "controlador/config.php"; // Detecció de temps d'inactivitat
 
 require "./model/db_conn.php"; // Inclou el fitxer de connexió a la base de dades.
-$_SESSION['loggedin'] = true;
-$_SESSION['equip'] = "Valencia CF";
+/* $_SESSION['loggedin'] = true;
+$_SESSION['equip'] = "Valencia CF"; */
 
 $conn = connect(); // Estableix la connexió a la base de dades.
 
