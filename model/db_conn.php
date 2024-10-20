@@ -1,6 +1,8 @@
 <?php
 //Alexis Boisset
 
+/* ANTES CLASS DATABASE */
+
 $servername = "127.0.0.1";  // Host del servidor MySQL
 $dbname = "Pt04_Alexis_Boisset";  // Nom de la base de dades
 $username = "root";  // Nom d'usuari MySQL
