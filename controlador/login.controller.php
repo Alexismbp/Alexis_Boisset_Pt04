@@ -13,9 +13,6 @@ try {
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        /* $email = "alexismarcbp@gmail.com";
-        $password = "admin"; */
-
         if ($userData = getUserData($email, $conn)) {
 
             $nomUsuari = $userData['nom_usuari'];
@@ -28,8 +25,6 @@ try {
                 $_SESSION['equip'] = $equip;
                 header("Location: ../index.php");
                 exit();
-
-                
             } else {
                 $_SESSION['failure'] = "La contrasenya no es correcta";
             }
@@ -39,7 +34,6 @@ try {
     }
 } catch (\Throwable $th) {
     $_SESSION['failure'] = "Error: " . $th->getMessage();
-
 } finally {
     $_SESSION['username'] = $nomUsuari;
     header("Location: ../vista/login.vista.php");

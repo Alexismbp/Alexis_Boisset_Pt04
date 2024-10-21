@@ -53,6 +53,17 @@ function consultarPartido($conn, $id = '')
     return $stmt; // Retorna el statement per a futures manipulacions
 }
 
+
+function deletePartit($conn, $partit_id)
+{
+    $sql = "DELETE FROM partits WHERE id = :partit_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':partit_id', $partit_id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+
+
 function getTeamName($conn, $id)
 {
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
@@ -68,32 +79,3 @@ function getTeamID($conn, $nom)
     $stmt->execute();
     return $stmt->fetchColumn();
 }
-
-
-/* 
-function update($conn, $id, $nombre, $descripcion) {
-    $sql = "UPDATE articles SET titol = :nombre, cos = :descripcion WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':nombre', $nombre);
-    $stmt->bindParam(':descripcion', $descripcion);
-
-    return $stmt; // Retorna el statement per a futures manipulacions
-}
-
-function delete($conn, $id) {
-    $sql = "DELETE FROM articles WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $id); // Correcció de la funció: 'bindparam' a 'bindParam'
-
-    return $stmt; // Retorna el statement per a futures manipulacions
-}
-
-function allArticles($conn) {
-    $sql = "SELECT * FROM articles";
-    $resultat = $conn->prepare($sql);
-    $resultat->execute();
-
-    return $resultat->fetchAll(PDO::FETCH_ASSOC); // Retorna tots els articles com un array associatiu
-}
-*/

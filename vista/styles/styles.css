@@ -1,126 +1,117 @@
-/* General styles */
+/* Alexis Boisset */
+
+/* index.css */
+
+/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     color: #333;
 }
 
-h1, h2 {
+header {
+    background-color: #007bff; /* Color de fondo para el encabezado */
+    padding: 15px;
     text-align: center;
-    color: #0056b3;
+    color: #fff;
 }
 
 h1 {
-    background-color: #e6e600;
-    padding: 20px;
+    font-size: 2.5em;
+    margin: 20px 0;
 }
 
 h2 {
-    margin-top: 20px;
-    font-size: 1.5rem;
+    font-size: 2em;
+    margin: 20px 0;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    text-align: center;
+h3 {
+    font-size: 1.5em;
     margin: 10px 0;
 }
 
-a {
-    text-decoration: none;
-    color: #0056b3;
-}
-
-/* Buttons */
-a.btn-login, a.btn-register, a.btn-logout {
-    display: inline-block;
+/* Estilos de los botones */
+.btn-login, .btn-register, .btn-logout, .btn-partit {
+    background-color: #28a745; /* Verde para botones */
+    color: white;
     padding: 10px 20px;
-    margin: 10px;
+    text-decoration: none;
     border-radius: 5px;
-    font-weight: bold;
+    margin: 5px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-a.btn-login {
-    background-color: #007bff;
+.btn-login:hover, .btn-register:hover, .btn-logout:hover, .btn-partit:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el mouse */
+}
+
+/* Estilo para mensajes */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.message.error {
+    background-color: #dc3545; /* Rojo para errores */
     color: white;
 }
 
-a.btn-register {
-    background-color: #28a745;
-    color: white;
-}
-
-a.btn-logout {
-    background-color: #dc3545;
-    color: white;
-}
-
-a.btn-login:hover, a.btn-register:hover, a.btn-logout:hover {
-    opacity: 0.8;
-}
-
-/* Match list */
+/* Estilos para la lista de partidos */
 .partits {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
     margin: 20px 0;
 }
 
 .partit {
-    background-color: #fff;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
-    width: 250px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    flex-basis: 45%; /* Dos columnas en pantallas medianas */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .partit h3 {
-    color: #333;
-    font-size: 1.2rem;
+    color: #007bff; /* Color azul para los títulos de los partidos */
 }
 
-.partit p {
-    color: #666;
-    font-size: 1rem;
-}
-
-/* Pagination */
-.pagination {
-    text-align: center;
+/* Estilos para el formulario */
+.form-partits-per-page {
     margin: 20px 0;
 }
 
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Estilos para la paginación */
+.pagination {
+    margin: 20px 0;
+    text-align: center; /* Centrar los botones de paginación */
+}
+
 .pagination a {
-    margin: 0 10px;
-    padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #007bff; /* Color de fondo para botones de paginación */
     color: white;
+    padding: 10px 15px;
     border-radius: 5px;
     text-decoration: none;
+    margin: 0 5px;
+    display: inline-block;
+    transition: background-color 0.3s;
 }
 
 .pagination a:hover {
-    background-color: #0056b3;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .partits {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .partit {
-        width: 90%;
-    }
+    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
 }

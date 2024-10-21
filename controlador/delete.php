@@ -1,35 +1,71 @@
 <?php
 // Alexis Boisset
 
+session_start();
+
 try {
-    require "../model/db_conn.php"; // Inclou la classe Database per a la connexió
+    require "../model/db_conn.php";
+    require "../model/porra.php";
 
     try {
-        $conn = connect(); // Crea una connexió a la base de dades
+        $conn = connect(); 
     } catch (PDOException $e) {
-        die("Error de connexió: " . $e->getMessage());
+        $_SESSION['error'] = "Error de connexió: " . $e->getMessage();
+        header("Location: ../vista/eliminar.php?error=connexio"); 
+        exit();
     }
 
     // Comprovar si la connexió és correcta i si la petició és POST
-    if ($conn && $_SERVER["REQUEST_METHOD"] === "POST") {
-        $id = $_POST["id"]; 
+    if ($conn && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        $partit_id = $_POST["partit_id"]; 
 
         // Validar que l'ID no estigui buit i sigui numèric
-        if (!empty($id) && is_numeric($id)) {
-            $resultat = $database->delete($conn, $id); // Prepara l'eliminació
+        if (!empty($partit_id) && is_numeric($partit_id)) {
+            $resultat = deletePartit($conn, $partit_id); // Crida la funció per eliminar el partit
         } else {
-            header("Location: ../vista/eliminar.php?error=2"); // Error: ID no vàlid
+            $_SESSION['error'] = "ID de partit no vàlid";
+            header("Location: ../vista/eliminar.php?error=id_invalid"); // Error: ID no vàlid
             exit();
         }
 
-        // Executar la consulta d'eliminació
-        if ($resultat->execute()) {
+        // Comprovar si la eliminació ha estat correcta
+        if ($resultat) {
+            $_SESSION['success'] = "Partit eliminat correctament";
             header("Location: ../vista/eliminar.php?success"); // Redirigeix amb èxit
             exit();
+        } else {
+            $_SESSION['error'] = "Error al eliminar el partit";
+            header("Location: ../vista/eliminar.php?error=eliminar"); // Error al eliminar
+            exit();
         }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
+        $partit_id = $_GET["id"]; // S'assegura que l'ID del partit ve del index.vista
+
+        // Validar que l'ID no estigui buit i sigui numèric
+        if (!empty($partit_id) && is_numeric($partit_id)) {
+            $resultat = deletePartit($conn, $partit_id); // Crida la funció per eliminar el partit
+        } else {
+            $_SESSION['error'] = "ID de partit no vàlid";
+            header("Location: ../vista/eliminar.php?error=id_invalid"); // Error: ID no vàlid
+            exit();
+        }
+
+        if ($resultat) {
+            $_SESSION['success'] = "Partit eliminat correctament";
+            header("Location: ../vista/eliminar.php?success"); // Redirigeix amb èxit
+            exit();
+        } else {
+            $_SESSION['error'] = "Error al eliminar el partit";
+            header("Location: ../vista/eliminar.php?error=eliminar"); // Error al eliminar
+            exit();
+        }
+    } else {
+        $_SESSION['error'] = "Petició no vàlida";
+        header("Location: ../vista/eliminar.php?error=peticio_no_valida"); // Error: Petició no vàlida
+        exit();
     }
 } catch (Exception $e) {
-    echo "S'ha produit un error: " . $e->getMessage(); // Mostra error si ocorre una excepció
-    header("Location: ../vista/eliminar.php?failure"); // Redirigeix en cas de fallida
+    $_SESSION['error'] = "S'ha produit un error: " . $e->getMessage();
+    header("Location: ../vista/eliminar.php?error=excepcio"); // Redirigeix en cas de fallida amb excepció
     exit();
 }

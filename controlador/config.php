@@ -11,6 +11,6 @@ if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 
 
 
     header("Location: " . BASE_URL . "/vista/login.vista.php"); // Redirigir al login
-    exit(); 
+    exit();
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // Actualizar el tiempo de última actividad

@@ -24,16 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     $error = false;
 
 
-    /* $_SESSION['id'] = 6;
-    $id = ;
-    $equip_local = "FC Barcelona";
-    $equip_visitant = "Atlético de Madrid";
-    $data = trim("17/10/2024");
-    $gols_local = 1;
-    $gols_visitant = 2;
-    $missatgesError = [];
-    $error = false; */
-
     // Comprobar camps buits
     if (empty($equip_local)) {
         $missatgesError[] = 'L\'equip local no pot estar buit';

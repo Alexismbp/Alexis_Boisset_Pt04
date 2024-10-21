@@ -1,3 +1,4 @@
+<!-- Alexis Boisset -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -34,6 +35,7 @@
         <ul>
             <!-- Enllaços per a gestionar els partits -->
             <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
+            <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
 

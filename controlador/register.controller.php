@@ -17,15 +17,6 @@ try {
         $missatgesError = [];
         $error = false;
 
-        /* $nomUsuari = "Xavi Martin";
-        $contrasenya = "Admin123";
-        $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
-        $passwordConfirm = "Admin123";
-        $email = "x.martin@sapalomera.cat";
-        $equipFavorit = "Rayo Vallecano";
-        $missatgesError = [];
-        $error = false; */
-
         if (empty($nomUsuari)) {
             $missatgesError[] = "El nom d'usuari no pot estar buit";
             $error = true;
@@ -57,7 +48,6 @@ try {
 
         if ($error) {
             throw new Exception();
-            
         }
 
 

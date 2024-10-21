@@ -29,7 +29,7 @@ function registerUser($username, $email, $password, $equipFavorit, $conn)
     return $insertQuery->execute();
 }
 
-function getUserData($email,$conn)
+function getUserData($email, $conn)
 {
     // Preparo la consulta
     $conn;

@@ -1,3 +1,4 @@
+<!-- Alexis Boisset -->
 <?php
 session_start();
 require "controlador/config.php";
@@ -5,7 +6,7 @@ require "./model/db_conn.php";
 
 $conn = connect();
 
-/* $_POST['partitsPerPage'] = 10; */
+
 
 // Definir el número de partidos por página.
 if (isset($_GET['partitsPerPage'])) {
