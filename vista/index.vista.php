@@ -21,6 +21,14 @@
 </header>
 
 <body>
+    <?php
+    if (isset($_SESSION['errors'])) {
+        foreach ($_SESSION['errors'] as $error) {
+            echo '<div class="message error">' . $error . '</div>'; // Mostra cada error.
+        }
+        unset($_SESSION['errors']); // Neteja els errors de la sessió.
+    }
+    ?>
     <h1>Partits de LaLliga</h1>
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
@@ -57,8 +65,8 @@
                     <?php endif; ?>
 
                     <?php if ($_SESSION['loggedin']): ?>
-                        <a href="vista/crear_partit.php?id=<?php echo $partit['id']?>">Editar Partit</a>
-                        <a href="vista/eliminar.php?id=<?php echo $partit['id']?>">Eliminar Partit</a>
+                        <a href="controlador/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
+                        <a href="controlador/delete.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
                     <?php endif ?>
                 </div>
             <?php endforeach; ?>

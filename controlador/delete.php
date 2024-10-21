@@ -12,7 +12,7 @@ try {
 
     // Comprovar si la connexió és correcta i si la petició és POST
     if ($conn && $_SERVER["REQUEST_METHOD"] === "POST") {
-        $id = $_POST["id"]; // Recupera l'ID del formulari
+        $id = $_POST["id"]; 
 
         // Validar que l'ID no estigui buit i sigui numèric
         if (!empty($id) && is_numeric($id)) {

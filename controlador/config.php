@@ -1,6 +1,6 @@
 <?php
 // Alexis Boisset
-// Control de inactividad
+// Control de inactivitat (tret de StackOverflow)
 // Obtener la URL base del servidor
 define('BASE_URL', "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']));
 

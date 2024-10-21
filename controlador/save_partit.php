@@ -5,6 +5,7 @@ session_start();
 require "../model/db_conn.php";
 require "../model/porra.php";
 
+
 try {
     $conn = connect();
 } catch (PDOException $e) {
@@ -58,19 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         $resultat = consultarPartido($conn, $id);
         $partit = $resultat->fetch(PDO::FETCH_ASSOC);
 
-        if ($partit) {
-            // Obtenim els noms dels equips per a mostrar-los
-            $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
-            $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
-
-            $_SESSION['equip_local'] = $equip_local_name;
-            $_SESSION['equip_visitant'] = $equip_visitant_name;
-            $_SESSION['data'] = $partit['data'];
-            $_SESSION['gols_local'] = $partit['gols_local'];
-            $_SESSION['gols_visitant'] = $partit['gols_visitant'];
-            $_SESSION['jugat'] = $partit['jugat'];
-            $_SESSION["id"] = $id;
-            $_SESSION['editant'] = true;
+        if (dadesEdicio($conn, $partit, $id)) {
 
             header("Location: ../vista/crear_partit.php");
             exit();
@@ -119,8 +108,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         header("Location: ../vista/crear_partit.php");
         exit();
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
+
+    $id = $_GET['id'];
+
+    if (!empty($id) && !is_numeric($id)) {
+        $missatgesError[] = 'L\'ID ha de ser numèric';
+        $error = true;
+    } elseif (!empty($id)) {
+        // Consulta el partit per editar
+        $resultat = consultarPartido($conn, $id);
+        $partit = $resultat->fetch(PDO::FETCH_ASSOC);
+
+        if (dadesEdicio($conn, $partit, $id)) {
+
+            header("Location: ../vista/crear_partit.php");
+            exit();
+        } else {
+            $missatgesError[] = "Aquest partit no existeix";
+        }
+    }
+
+    $_SESSION['errors'] = $missatgesError;
+
+    header("Location: ../index.php");
+    exit();
 } else {
     $_SESSION['failure'] = "Alguna cosa no ha funcionat com s'esperava";
     header("Location: ../vista/crear_partit.php");
     exit();
+}
+
+
+
+// Obtenim els noms dels equips per a mostrar-los
+function dadesEdicio($conn, $partit, $id)
+{
+
+    $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
+    $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
+
+    $_SESSION['equip_local'] = $equip_local_name;
+    $_SESSION['equip_visitant'] = $equip_visitant_name;
+    $_SESSION['data'] = $partit['data'];
+    $_SESSION['gols_local'] = $partit['gols_local'];
+    $_SESSION['gols_visitant'] = $partit['gols_visitant'];
+    $_SESSION['jugat'] = $partit['jugat'];
+    $_SESSION["id"] = $id;
+    $_SESSION['editant'] = true;
+
+    return true;
 }
