@@ -1,4 +1,3 @@
-<!-- Alexis Boisset -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -30,7 +29,8 @@
         unset($_SESSION['errors']); // Neteja els errors de la sessió.
     }
     ?>
-    <h1>Partits de LaLliga</h1>
+    <h1>Gestor de Partits</h1>
+
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
             <!-- Enllaços per a gestionar els partits -->
@@ -38,6 +38,16 @@
             <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
         </ul>
     <?php endif ?>
+
+    <!-- Select per a triar la lliga -->
+    <form method="GET" action="index.php" class="form-lliga">
+        <label for="lliga">Selecciona la lliga:</label>
+        <select id="lliga" name="lliga" onchange="this.form.submit()">
+            <option value="laliga" <?php if ($lligaSeleccionada == 'laliga') echo 'selected'; ?>>LaLiga</option>
+            <option value="premier" <?php if ($lligaSeleccionada == 'premier') echo 'selected'; ?>>Premier League</option>
+            <option value="ligue1" <?php if ($lligaSeleccionada == 'ligue1') echo 'selected'; ?>>Ligue 1</option>
+        </select>
+    </form>
 
     <!-- Select per a triar quants partits mostrar per pàgina -->
     <form method="GET" action="index.php" class="form-partits-per-page">
@@ -77,11 +87,11 @@
         <!-- Navegació de paginació -->
         <div class="pagination">
             <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?>&partitsPerPage=<?= $partitsPerPage ?>">Anterior</a>
+                <a href="?page=<?= $page - 1 ?>&partitsPerPage=<?= $partitsPerPage ?>&lliga=<?= $lligaSeleccionada ?>">Anterior</a>
             <?php endif; ?>
 
             <?php if ($page < $totalPages): ?>
-                <a href="?page=<?= $page + 1 ?>&partitsPerPage=<?= $partitsPerPage ?>">Següent</a>
+                <a href="?page=<?= $page + 1 ?>&partitsPerPage=<?= $partitsPerPage ?>&lliga=<?= $lligaSeleccionada ?>">Següent</a>
             <?php endif; ?>
         </div>
     <?php else: ?>
