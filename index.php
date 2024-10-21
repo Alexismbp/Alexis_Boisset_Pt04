@@ -1,70 +1,66 @@
-<!-- Alexis Boisset -->
-
 <?php
-session_start(); // Inicia la sessió per a gestionar l'autenticació i les dades de l'usuari.
-require "controlador/config.php"; // Detecció de temps d'inactivitat
+session_start();
+require "controlador/config.php";
+require "./model/db_conn.php";
 
-require "./model/db_conn.php"; // Inclou el fitxer de connexió a la base de dades.
-/* $_SESSION['loggedin'] = true;
-$_SESSION['equip'] = "Valencia CF"; */
+$conn = connect();
 
-$conn = connect(); // Estableix la connexió a la base de dades.
+/* $_POST['partitsPerPage'] = 10; */
 
+// Definir el número de partidos por página.
+if (isset($_GET['partitsPerPage'])) {
+    $partitsPerPage = (int)$_GET['partitsPerPage'];
+    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/"); // Cookie válida por 30 días.
+} elseif (isset($_COOKIE['partitsPerPage'])) {
+    $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
+} else {
+    $partitsPerPage = 5; // Valor por defecto.
+}
 
-$partitsPerPage = 5; // Nombre de partits a mostrar per cada pàgina.
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $partitsPerPage;
 
-
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1; // Recupera la pàgina actual de la URL o estableix la pàgina 1 per defecte.
-
-
-$offset = ($page - 1) * $partitsPerPage; // Calcula l'offset per a la consulta en funció de la pàgina actual.
-
-// Preparem la consulta SQL 
+// Consulta SQL para obtener los partidos (según si el usuario está logado o no).
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    // Si l'usuari està logat, només mostra partits del seu equip favorit
-    $equipFavorit = $_SESSION['equip']; 
+    $equipFavorit = $_SESSION['equip'];
     $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
             FROM partits p
             JOIN equips e_local ON p.equip_local_id = e_local.id
             JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
             WHERE e_local.nom = :equip OR e_visitant.nom = :equip
-            LIMIT :limit OFFSET :offset"; // Consulta per obtenir els partits del seu equip favorit.
-    $stmt = $conn->prepare($sql); 
-    $stmt->bindValue(':equip', $equipFavorit, PDO::PARAM_STR); // Vincula l'equip favorit a la consulta.
-    $stmt->bindValue(':limit', $partitsPerPage, PDO::PARAM_INT); // Vincula el límit de resultats.
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT); // Vincula l'offset.
+            LIMIT :limit OFFSET :offset";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':equip', $equipFavorit, PDO::PARAM_STR);
+    $stmt->bindValue(':limit', $partitsPerPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 } else {
-    // Si no està logat, mostra tots els partits
-    $sql = "SELECT p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
+    $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, jugat
             FROM partits p
             JOIN equips e_local ON p.equip_local_id = e_local.id
             JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
-            LIMIT :limit OFFSET :offset"; // Consulta per obtenir tots els partits.
-    $stmt = $conn->prepare($sql); // Prepara la consulta.
-    $stmt->bindValue(':limit', $partitsPerPage, PDO::PARAM_INT); // Vincula el límit de resultats.
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT); // Vincula l'offset.
-
+            LIMIT :limit OFFSET :offset";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':limit', $partitsPerPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 }
 
-// Executem la consulta
-$stmt->execute(); 
-$partits = $stmt->fetchAll(PDO::FETCH_ASSOC); // Recupera tots els resultats com un array associatiu.
+$stmt->execute();
+$partits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Calculem el total de partits
+// Calcular total de partidos para la paginación.
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $totalPartits = $conn->prepare("SELECT COUNT(*) FROM partits p
                                      JOIN equips e_local ON p.equip_local_id = e_local.id
                                      JOIN equips e_visitant ON p.equip_visitant_id = e_visitant.id
-                                     WHERE e_local.nom = :equip OR e_visitant.nom = :equip"); // Consulta per comptar el total de partits del seu equip favorit.
-    $totalPartits->bindValue(':equip', $equipFavorit, PDO::PARAM_STR); // Vincula l'equip favorit.
-    $totalPartits->execute(); 
-    $totalPartits = $totalPartits->fetchColumn(); // Recupera el total de partits.
+                                     WHERE e_local.nom = :equip OR e_visitant.nom = :equip");
+    $totalPartits->bindValue(':equip', $equipFavorit, PDO::PARAM_STR);
+    $totalPartits->execute();
+    $totalPartits = $totalPartits->fetchColumn();
 } else {
-    $totalPartits = $conn->query("SELECT COUNT(*) FROM partits")->fetchColumn(); // Consulta per comptar tots els partits si no està logat.
+    $totalPartits = $conn->query("SELECT COUNT(*) FROM partits")->fetchColumn();
 }
 
-
-$totalPages = ceil($totalPartits / $partitsPerPage); // Calcula el nombre total de pàgines.
+$totalPages = ceil($totalPartits / $partitsPerPage);
 
 include "./vista/index.vista.php";
 ?>

@@ -26,10 +26,20 @@
         <ul>
             <!-- Enllaços per a gestionar els partits -->
             <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
-            <!-- <li><a href="vista/llistar.php">Consultar partits</a></li> -->
-            <!-- <li><a href="vista/eliminar.php">Eliminar un partit</a></li> -->
         </ul>
     <?php endif ?>
+
+    <!-- Select per a triar quants partits mostrar per pàgina -->
+    <form method="GET" action="index.php" class="form-partits-per-page">
+        <label for="partitsPerPage">Partits per pàgina:</label>
+        <select id="partitsPerPage" name="partitsPerPage" onchange="this.form.submit()">
+            <option value="5" <?php if ($partitsPerPage == 5) echo 'selected'; ?>>5</option>
+            <option value="10" <?php if ($partitsPerPage == 10) echo 'selected'; ?>>10</option>
+            <option value="15" <?php if ($partitsPerPage == 15) echo 'selected'; ?>>15</option>
+            <option value="20" <?php if ($partitsPerPage == 20) echo 'selected'; ?>>20</option>
+        </select>
+    </form>
+
     <!-- Mostra els partits paginats -->
     <h2>Llista de partits</h2>
     <?php if (count($partits) > 0): ?>
@@ -46,15 +56,10 @@
                         <p>Partit programat per al: <?php echo date('d-m-Y', strtotime($partit['data'])); ?></p>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['loggedin']):
-                        // require controlador/save_partit.php
-                        // require "controlador/porra.php";
-                    ?>
+                    <?php if ($_SESSION['loggedin']): ?>
                         <a href="vista/crear_partit.php?id=<?php echo $partit['id']?>">Editar Partit</a>
                         <a href="vista/eliminar.php?id=<?php echo $partit['id']?>">Eliminar Partit</a>
-
                     <?php endif ?>
-
                 </div>
             <?php endforeach; ?>
         </div>
@@ -62,11 +67,11 @@
         <!-- Navegació de paginació -->
         <div class="pagination">
             <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?>">Anterior</a>
+                <a href="?page=<?= $page - 1 ?>&partitsPerPage=<?= $partitsPerPage ?>">Anterior</a>
             <?php endif; ?>
 
             <?php if ($page < $totalPages): ?>
-                <a href="?page=<?= $page + 1 ?>">Següent</a>
+                <a href="?page=<?= $page + 1 ?>&partitsPerPage=<?= $partitsPerPage ?>">Següent</a>
             <?php endif; ?>
         </div>
     <?php else: ?>
