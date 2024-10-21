@@ -19,6 +19,8 @@ try {
             $hashedPassword = $userData['contrasenya'];
             $equip = $userData['equip_favorit'];
 
+            
+
             if (hash_equals(hash('sha256', $password), $hashedPassword)) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $nomUsuari;
