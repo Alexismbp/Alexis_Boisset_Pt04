@@ -25,6 +25,7 @@ try {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $nomUsuari;
                 $_SESSION['equip'] = $equip;
+                
                 header("Location: ../index.php");
                 exit();
             } else {

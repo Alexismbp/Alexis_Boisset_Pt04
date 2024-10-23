@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 21-10-2024 a las 03:57:50
+-- Tiempo de generación: 23-10-2024 a las 13:37:29
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -29,33 +29,95 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `equips` (
   `id` int(11) NOT NULL,
-  `nom` varchar(100) NOT NULL
+  `nom` varchar(100) NOT NULL,
+  `lliga_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `equips`
 --
 
-INSERT INTO `equips` (`id`, `nom`) VALUES
-(16, 'Alavés'),
-(7, 'Athletic Club'),
-(3, 'Atlético de Madrid'),
-(18, 'Cádiz CF'),
-(9, 'Celta de Vigo'),
-(19, 'Elche CF'),
-(14, 'Espanyol'),
-(1, 'FC Barcelona'),
-(11, 'Getafe CF'),
-(15, 'Granada CF'),
-(17, 'Mallorca'),
-(12, 'Osasuna'),
-(13, 'Rayo Vallecano'),
-(6, 'Real Betis'),
-(2, 'Real Madrid'),
-(5, 'Real Sociedad'),
-(4, 'Sevilla FC'),
-(8, 'Valencia CF'),
-(10, 'Villarreal CF');
+INSERT INTO `equips` (`id`, `nom`, `lliga_id`) VALUES
+(1, 'Barcelona', 1),
+(2, 'Real Madrid', 1),
+(3, 'Sevilla', 1),
+(4, 'Betis', 1),
+(5, 'Atlético Madrid', 1),
+(6, 'Valencia', 1),
+(7, 'Villarreal', 1),
+(8, 'Celta de Vigo', 1),
+(9, 'Real Sociedad', 1),
+(10, 'Athletic Bilbao', 1),
+(11, 'Getafe', 1),
+(12, 'Espanyol', 1),
+(13, 'Alavés', 1),
+(14, 'Rayo Vallecano', 1),
+(15, 'Cádiz', 1),
+(16, 'Mallorca', 1),
+(17, 'Girona', 1),
+(18, 'Osasuna', 1),
+(19, 'Granada', 1),
+(20, 'Las Palmas', 1),
+(21, 'Manchester City', 2),
+(22, 'Manchester United', 2),
+(23, 'Liverpool', 2),
+(24, 'Chelsea', 2),
+(25, 'Arsenal', 2),
+(26, 'Tottenham', 2),
+(27, 'Leicester', 2),
+(28, 'Everton', 2),
+(29, 'Newcastle', 2),
+(30, 'West Ham', 2),
+(31, 'Crystal Palace', 2),
+(32, 'Brighton', 2),
+(33, 'Aston Villa', 2),
+(34, 'Wolves', 2),
+(35, 'Burnley', 2),
+(36, 'Fulham', 2),
+(37, 'Southampton', 2),
+(38, 'Leeds', 2),
+(39, 'Brentford', 2),
+(40, 'Sheffield United', 2),
+(41, 'PSG', 3),
+(42, 'Marseille', 3),
+(43, 'Lyon', 3),
+(44, 'Lille', 3),
+(45, 'Monaco', 3),
+(46, 'Nice', 3),
+(47, 'Bordeaux', 3),
+(48, 'Saint-Etienne', 3),
+(49, 'Rennes', 3),
+(50, 'Nantes', 3),
+(51, 'Montpellier', 3),
+(52, 'Strasbourg', 3),
+(53, 'Lens', 3),
+(54, 'Reims', 3),
+(55, 'Brest', 3),
+(56, 'Angers', 3),
+(57, 'Toulouse', 3),
+(58, 'Lorient', 3),
+(59, 'Metz', 3),
+(60, 'Clermont', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lligues`
+--
+
+CREATE TABLE `lligues` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `lligues`
+--
+
+INSERT INTO `lligues` (`id`, `nom`) VALUES
+(1, 'LaLiga'),
+(3, 'Ligue 1'),
+(2, 'Premier League');
 
 -- --------------------------------------------------------
 
@@ -70,29 +132,75 @@ CREATE TABLE `partits` (
   `data` date NOT NULL,
   `gols_local` tinyint(4) DEFAULT NULL,
   `gols_visitant` tinyint(4) DEFAULT NULL,
-  `jugat` tinyint(1) DEFAULT 0
+  `jugat` tinyint(1) DEFAULT 0,
+  `liga_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `partits`
 --
 
-INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gols_local`, `gols_visitant`, `jugat`) VALUES
-(9, 1, 2, '2024-08-20', NULL, NULL, 0),
-(10, 3, 4, '2024-08-21', NULL, NULL, 0),
-(13, 9, 10, '2024-08-24', NULL, NULL, 0),
-(14, 11, 12, '2024-08-25', NULL, NULL, 0),
-(15, 13, 14, '2024-08-26', NULL, NULL, 0),
-(16, 15, 16, '2024-08-27', NULL, NULL, 0),
-(17, 17, 18, '2024-08-28', NULL, NULL, 0),
-(18, 2, 3, '2024-09-01', NULL, NULL, 0),
-(19, 4, 5, '2024-09-02', NULL, NULL, 0),
-(20, 6, 1, '2024-09-03', NULL, NULL, 0),
-(21, 7, 9, '2024-09-04', NULL, NULL, 0),
-(23, 12, 13, '2024-09-06', NULL, NULL, 0),
-(24, 10, 15, '2024-09-07', NULL, NULL, 0),
-(25, 16, 17, '2024-09-08', NULL, NULL, 0),
-(26, 18, 14, '2024-09-09', NULL, NULL, 0);
+INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gols_local`, `gols_visitant`, `jugat`, `liga_id`) VALUES
+(31, 1, 2, '2024-11-01', 2, 1, 1, 1),
+(32, 3, 4, '2024-11-02', NULL, NULL, 0, 1),
+(33, 5, 6, '2024-11-03', 1, 1, 1, 1),
+(34, 7, 8, '2024-11-04', NULL, NULL, 0, 1),
+(35, 9, 10, '2024-11-05', 3, 0, 1, 1),
+(36, 11, 12, '2024-11-06', NULL, NULL, 0, 1),
+(37, 13, 14, '2024-11-07', 1, 0, 1, 1),
+(38, 15, 16, '2024-11-08', NULL, NULL, 0, 1),
+(39, 17, 18, '2024-11-09', 2, 2, 1, 1),
+(40, 19, 20, '2024-11-10', NULL, NULL, 0, 1),
+(41, 1, 3, '2024-11-11', 2, 0, 1, 1),
+(42, 2, 4, '2024-11-12', NULL, NULL, 0, 1),
+(43, 5, 7, '2024-11-13', 3, 2, 1, 1),
+(44, 6, 8, '2024-11-14', NULL, NULL, 0, 1),
+(45, 9, 11, '2024-11-15', 1, 1, 1, 1),
+(46, 12, 14, '2024-11-16', NULL, NULL, 0, 1),
+(47, 13, 15, '2024-11-17', 1, 0, 1, 1),
+(48, 16, 18, '2024-11-18', NULL, NULL, 0, 1),
+(49, 17, 19, '2024-11-19', 2, 0, 1, 1),
+(50, 10, 20, '2024-11-20', NULL, NULL, 0, 1),
+(51, 21, 22, '2024-11-01', 1, 2, 1, 2),
+(52, 23, 24, '2024-11-02', NULL, NULL, 0, 2),
+(53, 25, 26, '2024-11-03', 0, 0, 1, 2),
+(54, 27, 28, '2024-11-04', NULL, NULL, 0, 2),
+(55, 29, 30, '2024-11-05', 3, 1, 1, 2),
+(56, 31, 32, '2024-11-06', NULL, NULL, 0, 2),
+(57, 33, 34, '2024-11-07', 2, 1, 1, 2),
+(58, 35, 36, '2024-11-08', NULL, NULL, 0, 2),
+(59, 37, 38, '2024-11-09', 1, 3, 1, 2),
+(60, 39, 40, '2024-11-10', NULL, NULL, 0, 2),
+(61, 21, 23, '2024-11-11', 2, 2, 1, 2),
+(62, 22, 24, '2024-11-12', NULL, NULL, 0, 2),
+(63, 25, 27, '2024-11-13', 1, 0, 1, 2),
+(64, 26, 28, '2024-11-14', NULL, NULL, 0, 2),
+(65, 29, 31, '2024-11-15', 3, 2, 1, 2),
+(66, 32, 34, '2024-11-16', NULL, NULL, 0, 2),
+(67, 33, 35, '2024-11-17', 1, 1, 1, 2),
+(68, 36, 38, '2024-11-18', NULL, NULL, 0, 2),
+(69, 37, 39, '2024-11-19', 2, 0, 1, 2),
+(70, 40, 40, '2024-11-20', NULL, NULL, 0, 2),
+(71, 41, 42, '2024-11-01', 2, 2, 1, 3),
+(72, 43, 44, '2024-11-02', NULL, NULL, 0, 3),
+(73, 45, 46, '2024-11-03', 1, 1, 1, 3),
+(74, 47, 48, '2024-11-04', NULL, NULL, 0, 3),
+(75, 49, 50, '2024-11-05', 3, 0, 1, 3),
+(76, 51, 52, '2024-11-06', NULL, NULL, 0, 3),
+(77, 53, 54, '2024-11-07', 1, 0, 1, 3),
+(78, 55, 56, '2024-11-08', NULL, NULL, 0, 3),
+(79, 57, 58, '2024-11-09', 2, 3, 1, 3),
+(80, 59, 60, '2024-11-10', NULL, NULL, 0, 3),
+(81, 41, 43, '2024-11-11', 3, 1, 1, 3),
+(82, 42, 44, '2024-11-12', NULL, NULL, 0, 3),
+(83, 45, 47, '2024-11-13', 2, 1, 1, 3),
+(84, 46, 48, '2024-11-14', NULL, NULL, 0, 3),
+(85, 49, 51, '2024-11-15', 1, 1, 1, 3),
+(86, 52, 54, '2024-11-16', NULL, NULL, 0, 3),
+(87, 53, 55, '2024-11-17', 1, 0, 1, 3),
+(88, 56, 58, '2024-11-18', NULL, NULL, 0, 3),
+(89, 57, 59, '2024-11-19', 2, 2, 1, 3),
+(90, 60, 60, '2024-11-20', NULL, NULL, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -109,15 +217,6 @@ CREATE TABLE `usuaris` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuaris`
---
-
-INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`) VALUES
-(1, 'Marcos', 'm.lopez@sapalomera.cat', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 'Real Betis'),
-(2, 'Alexis', 'a.boisset@sapalomera.cat', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 'Valencia CF'),
-(3, 'Xavi Martin', 'x.martin@sapalomera.cat', '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', 'Rayo Vallecano');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -125,6 +224,14 @@ INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `
 -- Indices de la tabla `equips`
 --
 ALTER TABLE `equips`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nom` (`nom`),
+  ADD KEY `fk_lliga` (`lliga_id`);
+
+--
+-- Indices de la tabla `lligues`
+--
+ALTER TABLE `lligues`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `nom` (`nom`);
 
@@ -134,7 +241,8 @@ ALTER TABLE `equips`
 ALTER TABLE `partits`
   ADD PRIMARY KEY (`id`),
   ADD KEY `equip_local_id` (`equip_local_id`),
-  ADD KEY `equip_visitant_id` (`equip_visitant_id`);
+  ADD KEY `equip_visitant_id` (`equip_visitant_id`),
+  ADD KEY `fk_liga` (`liga_id`);
 
 --
 -- Indices de la tabla `usuaris`
@@ -152,28 +260,41 @@ ALTER TABLE `usuaris`
 -- AUTO_INCREMENT de la tabla `equips`
 --
 ALTER TABLE `equips`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT de la tabla `lligues`
+--
+ALTER TABLE `lligues`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `partits`
 --
 ALTER TABLE `partits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT de la tabla `usuaris`
 --
 ALTER TABLE `usuaris`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
+-- Filtros para la tabla `equips`
+--
+ALTER TABLE `equips`
+  ADD CONSTRAINT `fk_lliga` FOREIGN KEY (`lliga_id`) REFERENCES `lligues` (`id`);
+
+--
 -- Filtros para la tabla `partits`
 --
 ALTER TABLE `partits`
+  ADD CONSTRAINT `fk_liga` FOREIGN KEY (`liga_id`) REFERENCES `lligues` (`id`),
   ADD CONSTRAINT `partits_ibfk_1` FOREIGN KEY (`equip_local_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `partits_ibfk_2` FOREIGN KEY (`equip_visitant_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE;
 COMMIT;

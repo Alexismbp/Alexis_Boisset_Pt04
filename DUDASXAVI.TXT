@@ -33,6 +33,8 @@ https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-3
 
 """"""""""""""""""ME FALTAN LAS COOKIES""""""""""""""""""
 
+utilizar password_hash() password_verify()
+
 
 Pt05:
 
