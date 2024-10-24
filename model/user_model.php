@@ -15,15 +15,12 @@ function registerUser($username, $email, $password, $equipFavorit, $conn)
         return false; // El usuario ya existe
     }
 
-    // Encriptar contraseña
-    $hashedPassword = hash('sha256', $password);
-
     // Insertar el nuevo usuario
     $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) VALUES (:id, :username, :email, :password, :team)");
     $insertQuery->bindParam(':id', ultimaIdDisponible($conn));
     $insertQuery->bindParam(':username', $username);
     $insertQuery->bindParam(':email', $email);
-    $insertQuery->bindParam(':password', $hashedPassword);
+    $insertQuery->bindParam(':password', $password);
     $insertQuery->bindParam(':team', $equipFavorit);
 
     return $insertQuery->execute();

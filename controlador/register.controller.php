@@ -23,25 +23,24 @@ try {
         }
 
         if (empty($contrasenya)) {
-            $missatgesError[] = "Es obligatori una contrasenya";
+            $missatgesError[] = "És obligatori una contrasenya";
             $error = true;
         } elseif (preg_match($passwordPattern, $contrasenya) === 0) {
-            $missatgesError[] = "La contrasenya ha de tenir mínim: 8 caràcters, una majuscula, una minuscula y un digit";
+            $missatgesError[] = "La contrasenya ha de tenir mínim: 8 caràcters, una majúscula, una minúscula i un dígit";
             $error = true;
         }
 
         if (empty($email)) {
-            $missatgesError[] = "Es obligatori un correu electrònic";
+            $missatgesError[] = "És obligatori un correu electrònic";
             $error = true;
         }
 
         if (empty($equipFavorit)) {
-            $missatgesError[] = "Es obligatori un equip favorit";
+            $missatgesError[] = "És obligatori un equip favorit";
             $error = true;
         }
 
-
-        if (!$contrasenya === $passwordConfirm) {
+        if ($contrasenya !== $passwordConfirm) {
             $missatgesError[] = "Les contrasenyes no coincideixen";
             $error = true;
         }
@@ -50,8 +49,10 @@ try {
             throw new Exception();
         }
 
+        // Encriptamos la contraseña usando password_hash
+        $contrasenyaHashed = password_hash($contrasenya, PASSWORD_DEFAULT);
 
-        if (registerUser($nomUsuari, $email, $contrasenya, $equipFavorit, $conn)) {
+        if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
 
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $nomUsuari;
@@ -77,10 +78,8 @@ try {
 
 function validate($data)
 {
-    trim($data);
-    htmlspecialchars($data);
-    stripslashes($data);
-    filter_var($data);
-
+    $data = trim($data);
+    $data = htmlspecialchars($data);
+    $data = stripslashes($data);
     return $data;
 }

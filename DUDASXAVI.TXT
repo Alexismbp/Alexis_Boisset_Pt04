@@ -35,7 +35,8 @@ https://stackoverflow.com/questions/520237/how-do-i-expire-a-php-session-after-3
 
 utilizar password_hash() password_verify()
 
-
+Incluir de alguna manera la liga seleccionada cuando se inicia sesion para que solo pueda
+ver partidos de esa liga y posteriormente introducir el resultado esperado.
 Pt05:
 
 Mínimo 3 campos mas en la base de datos.
