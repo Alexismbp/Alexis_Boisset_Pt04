@@ -6,6 +6,14 @@ try {
     require '../model/db_conn.php';
     require '../model/user_model.php';
 
+    //DEBUGGING
+    $_SERVER['REQUEST_METHOD'] = 'POST';
+    $_POST['username'] = "Xavi";
+    $_POST['password'] = "Admin123";
+    $_POST['password_confirm'] = "Admin123";
+    $_POST['email'] = "xavi@gmail.com";
+    $_POST['equip'] = "Girona FC";  // Equipo favorito
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 
         $nomUsuari = validate($_POST['username']);
@@ -17,6 +25,7 @@ try {
         $missatgesError = [];
         $error = false;
 
+        // Validación de campos
         if (empty($nomUsuari)) {
             $missatgesError[] = "El nom d'usuari no pot estar buit";
             $error = true;
@@ -49,15 +58,20 @@ try {
             throw new Exception();
         }
 
-        // Encriptamos la contraseña usando password_hash
+        // Encriptamos la contraseña
         $contrasenyaHashed = password_hash($contrasenya, PASSWORD_DEFAULT);
 
+        // Registrar usuario
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
 
+            // Asignar valores a la sesión
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $nomUsuari;
             $_SESSION['equip'] = $equipFavorit;
+            $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
             $_SESSION['success'] = "Usuari registrat correctament";
+
+            // Redireccionar a la página de inicio
             header("Location: ../index.php");
             exit();
         } else {

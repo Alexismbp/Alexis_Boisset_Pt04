@@ -2,7 +2,7 @@
 const equipsPerLiga = {
     "LaLiga": [
         "FC Barcelona", "Real Madrid", "Atlético de Madrid", "Sevilla FC", "Valencia CF", "Villarreal CF", 
-        "Athletic Club", "Real Sociedad", "Real Betis", "Rayo Vallecano", "Celta de Vigo", 
+        "Athletic Club", "Girona FC", "Real Sociedad", "Real Betis", "Rayo Vallecano", "Celta de Vigo", 
         "CA Osasuna", "RCD Mallorca", "UD Almería", "Getafe CF", "UD Las Palmas", "Deportivo Alavés", "Granada CF"
     ],
     "Premier League": [

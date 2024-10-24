@@ -39,18 +39,28 @@
         </ul>
     <?php endif ?>
 
-    <!-- Select per a triar la lliga -->
+   <!-- Select per a triar la lliga -->
+<?php if ($_SESSION['loggedin']) : ?>
+    <form method="GET" action="index.php" class="form-lliga">
+        <label for="lliga">Selecciona la lliga:</label>
+        <select id="lliga" name="lliga" onchange="this.form.submit()">
+            <option value="laliga" <?php if ($lligaSeleccionada == 'laliga') echo 'selected'; ?>>LaLiga</option>
+            <option value="premier league" <?php if ($lligaSeleccionada == 'premier league') echo 'selected'; ?>>Premier League</option>
+            <option value="ligue 1" <?php if ($lligaSeleccionada == 'ligue 1') echo 'selected'; ?>>Ligue 1</option>
+        </select>
+    </form>
+<?php else: ?>
+    <!-- Mostrar select de lliga solo si no está logueado -->
+    <form method="GET" action="index.php" class="form-lliga">
+        <label for="lliga">Selecciona la lliga:</label>
+        <select id="lliga" name="lliga" onchange="this.form.submit()">
+            <option value="laliga" <?php if ($lligaSeleccionada == 'laliga') echo 'selected'; ?>>LaLiga</option>
+            <option value="premier league" <?php if ($lligaSeleccionada == 'premier league') echo 'selected'; ?>>Premier League</option>
+            <option value="ligue 1" <?php if ($lligaSeleccionada == 'ligue 1') echo 'selected'; ?>>Ligue 1</option>
+        </select>
+    </form>
+<?php endif; ?>
 
-    <?php if ($_SESSION['loggedin'] == false) { ?>
-        <form method="GET" action="index.php" class="form-lliga">
-            <label for="lliga">Selecciona la lliga:</label>
-            <select id="lliga" name="lliga" onchange="this.form.submit()">
-                <option value="laliga" <?php if ($lligaSeleccionada == 'laliga') echo 'selected'; ?>>LaLiga</option>
-                <option value="premier league" <?php if ($lligaSeleccionada == 'premier league') echo 'selected'; ?>>Premier League</option>
-                <option value="ligue 1" <?php if ($lligaSeleccionada == 'ligue 1') echo 'selected'; ?>>Ligue 1</option>
-            </select>
-        </form>
-    <?php } ?>
 
     <!-- Select per a triar quants partits mostrar per pàgina -->
     <form method="GET" action="index.php" class="form-partits-per-page">

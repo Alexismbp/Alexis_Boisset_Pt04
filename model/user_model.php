@@ -16,7 +16,8 @@ function registerUser($username, $email, $password, $equipFavorit, $conn)
     }
 
     // Insertar el nuevo usuario
-    $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) VALUES (:id, :username, :email, :password, :team)");
+    $insertQuery = $conn->prepare("INSERT INTO usuaris (id, nom_usuari, correu_electronic, contrasenya, equip_favorit) 
+                                    VALUES (:id, :username, :email, :password, :team)");
     $insertQuery->bindParam(':id', ultimaIdDisponible($conn));
     $insertQuery->bindParam(':username', $username);
     $insertQuery->bindParam(':email', $email);
@@ -26,6 +27,19 @@ function registerUser($username, $email, $password, $equipFavorit, $conn)
     return $insertQuery->execute();
 }
 
+function getLeagueName($equipFavorit, $conn)
+{
+    // Obtener el ID de la liga del equipo favorito
+    $query = $conn->prepare("SELECT lligues.nom AS lliga FROM equips 
+    JOIN lligues ON equips.lliga_id = lligues.id 
+    WHERE equips.nom = :equipFavorit");
+    $query->bindParam(':equipFavorit', $equipFavorit);
+    
+    $query->execute();
+
+    $nomLliga = $query->fetch(PDO::FETCH_COLUMN);
+    return $nomLliga;
+}
 function getUserData($email, $conn)
 {
     // Preparo la consulta

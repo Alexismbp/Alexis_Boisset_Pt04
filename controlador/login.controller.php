@@ -20,11 +20,21 @@ try {
             $hashedPassword = $userData['contrasenya']; // La contraseña almacenada
             $equip = $userData['equip_favorit'];
 
+            // Obtener la lliga del equipo favorito
+            $sql = "SELECT l.nom AS lliga FROM equips e
+                    JOIN lligues l ON e.lliga_id = l.id
+                    WHERE e.nom = :equip";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':equip', $equip, PDO::PARAM_STR);
+            $stmt->execute();
+            $lliga = $stmt->fetchColumn();
+
             // Usar password_verify para verificar la contraseña ingresada
             if (password_verify($password, $hashedPassword)) {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $nomUsuari;
                 $_SESSION['equip'] = $equip;
+                $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
 
                 header("Location: ../index.php");
                 exit();
@@ -38,7 +48,6 @@ try {
 } catch (\Throwable $th) {
     $_SESSION['failure'] = "Error: " . $th->getMessage();
 } finally {
-    $_SESSION['username'] = $nomUsuari ?? null;
     header("Location: ../vista/login.vista.php");
     exit();
 }
