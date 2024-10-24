@@ -34,7 +34,7 @@ try {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $nomUsuari;
                 $_SESSION['equip'] = $equip;
-                $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
+                $_SESSION['lliga'] = getLeagueName($equip, $conn);
 
                 header("Location: ../index.php");
                 exit();

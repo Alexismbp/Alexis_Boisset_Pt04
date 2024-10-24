@@ -5,8 +5,12 @@ require "./model/db_conn.php";
 
 session_start();
 //DEBUGGING
-$_SESSION['equip'] = "OGC Nice";
-$_SESSION['lliga'];
+require "model/user_model.php";
+/* $conn = connect();
+$_SESSION['loggedin'] = true;
+$_SESSION['username'] = "Xavi";
+$_SESSION['equip'] = "Girona FC";
+$_SESSION['lliga'] = getLeagueName($_SESSION['equip'], $conn); */
 
 // Definir el número de partidos por página
 if (isset($_GET['partitsPerPage'])) {
@@ -30,7 +34,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     } elseif (isset($_COOKIE['lliga'])) {
         $lligaSeleccionada = $_COOKIE['lliga'];
     } else {
-        $lligaSeleccionada = 'laliga'; // Valor por defecto
+        $lligaSeleccionada = 'LaLiga'; // Valor por defecto
     }
 }
 
