@@ -52,7 +52,7 @@ function getUserData($email, $conn)
     // Si el correu electronic existeix, agafa dades de l'usuari que son necessaries pel correcte funcionament de la Web
     if ($dbEmail['correu_electronic'] === $email) {
 
-        $sql = $conn->prepare("SELECT nom_usuari, equip_favorit, contrasenya FROM usuaris WHERE correu_electronic = :email");
+        $sql = $conn->prepare("SELECT id, nom_usuari, equip_favorit, contrasenya FROM usuaris WHERE correu_electronic = :email");
         $sql->bindParam(':email', $email); // Busquem per clau primaria únicament
 
         $sql->execute();

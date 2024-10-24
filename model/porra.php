@@ -63,8 +63,8 @@ function deletePartit($conn, $partit_id)
 }
 
 // Función para guardar la predicción en la base de datos
-function guardarPrediccio($pdo, $partit_id, $usuari_id, $gols_local, $gols_visitant) {
-    $stmt = $pdo->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
+function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant) {
+    $stmt = $conn->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
 
     // Vincular parámetros
     $stmt->bindParam(':partit_id', $partit_id);

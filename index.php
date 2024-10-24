@@ -6,11 +6,11 @@ require "./model/db_conn.php";
 session_start();
 //DEBUGGING
 require "model/user_model.php";
-/* $conn = connect();
+$conn = connect();
 $_SESSION['loggedin'] = true;
-$_SESSION['username'] = "Xavi";
-$_SESSION['equip'] = "Girona FC";
-$_SESSION['lliga'] = getLeagueName($_SESSION['equip'], $conn); */
+$_SESSION['username'] = "Alexis";
+$_SESSION['equip'] = "OGC Nice";
+$_SESSION['lliga'] = getLeagueName($_SESSION['equip'], $conn);
 
 // Definir el número de partidos por página
 if (isset($_GET['partitsPerPage'])) {
