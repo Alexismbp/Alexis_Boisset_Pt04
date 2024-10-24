@@ -97,22 +97,24 @@
         <div class="partits">
             <?php foreach ($partits as $partit): ?>
                 <div class="partit">
-                    <h3><?php echo htmlspecialchars($partit['equip_local']) . " vs " . htmlspecialchars($partit['equip_visitant']); ?></h3>
-
-                    <?php if ($partit['jugat']): ?>
-                        <!-- Si el partit ja s'ha jugat, mostrar el resultat -->
-                        <p>Resultat: <?php echo $partit['gols_local'] . " - " . $partit['gols_visitant']; ?></p>
-                    <?php else: ?>
-                        <!-- Si el partit encara no s'ha jugat, mostrar la data programada -->
-                        <p>Partit programat per al: <?php echo date('d-m-Y', strtotime($partit['data'])); ?></p>
+                    <p><?php echo $partit['equip_local_id']; ?> vs <?php echo $partit['equip_visitant_id']; ?></p>
+                    <p>Data: <?php echo $partit['data']; ?></p>
+                    <?php if (!$partit['jugat']): ?>
+                        <form action="guardar_prediccio.php" method="POST">
+                            <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
+                            <label for="gols_local">Gols Local:</label>
+                            <input type="number" name="gols_local" min="0" required>
+                            <label for="gols_visitant">Gols Visitant:</label>
+                            <input type="number" name="gols_visitant" min="0" required>
+                            <button type="submit">Guardar Predicció</button>
+                        </form>
                     <?php endif; ?>
-
-                    <?php if ($_SESSION['loggedin']): ?>
-                        <a href="controlador/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
-                        <a href="controlador/delete.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
-                    <?php endif ?>
+                    <!-- Aquí van los botones de editar y eliminar -->
+                    <a href="editar.php?id=<?php echo $partit['id']; ?>">Editar</a>
+                    <a href="eliminar.php?id=<?php echo $partit['id']; ?>">Eliminar</a>
                 </div>
             <?php endforeach; ?>
+
         </div>
 
         <!-- Navegació de paginació -->

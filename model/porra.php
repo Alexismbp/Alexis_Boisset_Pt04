@@ -62,7 +62,19 @@ function deletePartit($conn, $partit_id)
     return $stmt->execute();
 }
 
+// Función para guardar la predicción en la base de datos
+function guardarPrediccio($pdo, $partit_id, $usuari_id, $gols_local, $gols_visitant) {
+    $stmt = $pdo->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
 
+    // Vincular parámetros
+    $stmt->bindParam(':partit_id', $partit_id);
+    $stmt->bindParam(':usuari_id', $usuari_id);
+    $stmt->bindParam(':gols_local', $gols_local);
+    $stmt->bindParam(':gols_visitant', $gols_visitant);
+
+    // Ejecutar y devolver el resultado
+    return $stmt->execute();
+}
 
 function getTeamName($conn, $id)
 {
