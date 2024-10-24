@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 23-10-2024 a las 13:37:29
+-- Tiempo de generación: 24-10-2024 a las 11:33:59
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -38,66 +38,66 @@ CREATE TABLE `equips` (
 --
 
 INSERT INTO `equips` (`id`, `nom`, `lliga_id`) VALUES
-(1, 'Barcelona', 1),
+(1, 'FC Barcelona', 1),
 (2, 'Real Madrid', 1),
-(3, 'Sevilla', 1),
-(4, 'Betis', 1),
-(5, 'Atlético Madrid', 1),
-(6, 'Valencia', 1),
-(7, 'Villarreal', 1),
+(3, 'Sevilla FC', 1),
+(4, 'Real Betis', 1),
+(5, 'Atlético de Madrid', 1),
+(6, 'Valencia CF', 1),
+(7, 'Villarreal CF', 1),
 (8, 'Celta de Vigo', 1),
 (9, 'Real Sociedad', 1),
-(10, 'Athletic Bilbao', 1),
-(11, 'Getafe', 1),
+(10, 'Athletic Club', 1),
+(11, 'Getafe CF', 1),
 (12, 'Espanyol', 1),
-(13, 'Alavés', 1),
+(13, 'Deportivo Alavés', 1),
 (14, 'Rayo Vallecano', 1),
 (15, 'Cádiz', 1),
-(16, 'Mallorca', 1),
-(17, 'Girona', 1),
-(18, 'Osasuna', 1),
-(19, 'Granada', 1),
-(20, 'Las Palmas', 1),
+(16, 'RCD Mallorca', 1),
+(17, 'Girona FC', 1),
+(18, 'CA Osasuna', 1),
+(19, 'Granada CF', 1),
+(20, 'UD Las Palmas', 1),
 (21, 'Manchester City', 2),
 (22, 'Manchester United', 2),
 (23, 'Liverpool', 2),
 (24, 'Chelsea', 2),
 (25, 'Arsenal', 2),
 (26, 'Tottenham', 2),
-(27, 'Leicester', 2),
+(27, 'Leicester City', 2),
 (28, 'Everton', 2),
-(29, 'Newcastle', 2),
-(30, 'West Ham', 2),
+(29, 'Newcastle United', 2),
+(30, 'West Ham United', 2),
 (31, 'Crystal Palace', 2),
 (32, 'Brighton', 2),
 (33, 'Aston Villa', 2),
-(34, 'Wolves', 2),
+(34, 'Wolverhampton', 2),
 (35, 'Burnley', 2),
 (36, 'Fulham', 2),
 (37, 'Southampton', 2),
 (38, 'Leeds', 2),
 (39, 'Brentford', 2),
 (40, 'Sheffield United', 2),
-(41, 'PSG', 3),
-(42, 'Marseille', 3),
-(43, 'Lyon', 3),
-(44, 'Lille', 3),
-(45, 'Monaco', 3),
-(46, 'Nice', 3),
+(41, 'Paris Saint-Germain', 3),
+(42, 'Olympique de Marseille', 3),
+(43, 'Olympique Lyonnais', 3),
+(44, 'Lille OSC', 3),
+(45, 'AS Monaco', 3),
+(46, 'OGC Nice', 3),
 (47, 'Bordeaux', 3),
 (48, 'Saint-Etienne', 3),
-(49, 'Rennes', 3),
-(50, 'Nantes', 3),
-(51, 'Montpellier', 3),
-(52, 'Strasbourg', 3),
-(53, 'Lens', 3),
-(54, 'Reims', 3),
-(55, 'Brest', 3),
-(56, 'Angers', 3),
-(57, 'Toulouse', 3),
-(58, 'Lorient', 3),
-(59, 'Metz', 3),
-(60, 'Clermont', 3);
+(49, 'Stade Rennais', 3),
+(50, 'FC Nantes', 3),
+(51, 'Montpellier HSC', 3),
+(52, 'RC Strasbourg', 3),
+(53, 'RC Lens', 3),
+(54, 'Stade de Reims', 3),
+(55, 'Stade Brestois 29', 3),
+(56, 'Angers SCO', 3),
+(57, 'Toulouse FC', 3),
+(58, 'FC Lorient', 3),
+(59, 'FC Metz', 3),
+(60, 'Clermont Foot', 3);
 
 -- --------------------------------------------------------
 
@@ -217,6 +217,14 @@ CREATE TABLE `usuaris` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `usuaris`
+--
+
+INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`) VALUES
+(1, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice'),
+(2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -278,7 +286,7 @@ ALTER TABLE `partits`
 -- AUTO_INCREMENT de la tabla `usuaris`
 --
 ALTER TABLE `usuaris`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
