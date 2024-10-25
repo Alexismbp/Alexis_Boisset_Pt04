@@ -6,13 +6,6 @@ try {
     require '../model/db_conn.php';
     require '../model/user_model.php';
 
-    //DEBUGGING
-/*     $_SERVER['REQUEST_METHOD'] = 'POST';
-    $_POST['username'] = "Xavi";
-    $_POST['password'] = "Admin123";
-    $_POST['password_confirm'] = "Admin123";
-    $_POST['email'] = "xavi@gmail.com";
-    $_POST['equip'] = "Girona FC";  // Equipo favorito */
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 

@@ -6,7 +6,13 @@ require "../controlador/config.php"; // Detecció de temps d'inactivitat
 
 // Si s'ha fet click al boto "Netejar"
 if (isset($_GET['netejar'])) {
-    $_SESSION = array();  // Neteja totes les variables de la sessió.
+    unset($_SESSION['id']);
+    unset($_SESSION['equip_local']);
+    unset($_SESSION['equip_visitant']);
+    unset($_SESSION['data']);  // Neteja totes les variables de la sessió.
+    unset($_SESSION['gols_local']);
+    unset($_SESSION['gols_visitant']);
+    unset($_SESSION['editant']);
 }
 
 // Comprova si s'està editant i estableix l'atribut $edit
@@ -21,6 +27,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear o Editar Partit</title>
     <link rel="stylesheet" href="styles/styles_crear.css"> <!-- Enllaç al fitxer de CSS per estilitzar la pàgina. -->
+    <script src="../scripts/lligaequip.js" defer></script>
 </head>
 
 <body>
@@ -52,58 +59,35 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
             <input type="text" id="id" name="id" class="input-field" placeholder="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>" <?php echo $edit ?>> <!-- Input per l'ID del partit, només editable si no s'està editant. -->
 
             <?php if ($_SESSION['editant']) { ?>
+                <label for="lliga">Lliga:</label>
+                <input type="text" id="lliga" name="lliga" class="input-field" value="<?php echo $_SESSION['lliga']; ?>" placeholder="Escriu el nom de l'equip local" <?php echo $edit ?>> <!-- Input per l'equip local, només lectura. -->
+
                 <label for="equip_local">Equip Local:</label>
                 <input type="text" id="equip_local" name="equip_local" class="input-field" value="<?php echo $_SESSION['equip_local']; ?>" placeholder="Escriu el nom de l'equip local" <?php echo $edit ?>> <!-- Input per l'equip local, només lectura. -->
 
                 <label for="equip_visitant">Equip Visitant:</label>
                 <input type="text" id="equip_visitant" name="equip_visitant" class="input-field" value="<?php echo $_SESSION['equip_visitant']; ?>" placeholder="Escriu el nom de l'equip visitant" <?php echo $edit ?>> <!-- Input per l'equip visitant, només lectura. -->
             <?php } else { ?>
-                <label for="equip_local">Equip Local:</label>
-                <select id="equip_local" name="equip_local" class="input-field">
-                    <option value="">-- Selecciona un equip --</option>
-                    <option value="FC Barcelona">FC Barcelona</option>
-                    <option value="Real Madrid">Real Madrid</option>
-                    <option value="Atlético de Madrid">Atlético de Madrid</option>
-                    <option value="Sevilla FC">Sevilla FC</option>
-                    <option value="Valencia CF">Valencia CF</option>
-                    <option value="Villarreal CF">Villarreal CF</option>
-                    <option value="Athletic Club">Athletic Club</option>
-                    <option value="Real Sociedad">Real Sociedad</option>
-                    <option value="Real Betis">Real Betis</option>
-                    <option value="Rayo Vallecano">Rayo Vallecano</option>
-                    <option value="Celta de Vigo">Celta de Vigo</option>
-                    <option value="CA Osasuna">CA Osasuna</option>
-                    <option value="RCD Mallorca">RCD Mallorca</option>
-                    <option value="Girona FC">Girona FC</option>
-                    <option value="UD Almería">UD Almería</option>
-                    <option value="Getafe CF">Getafe CF</option>
-                    <option value="UD Las Palmas">UD Las Palmas</option>
-                    <option value="Deportivo Alavés">Deportivo Alavés</option>
-                    <option value="Granada CF">Granada CF</option>
+                <!-- Select per la Lliga -->
+                <label for="lliga">Lliga:</label>
+                <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips()" required>
+                    <option value="">-- Selecciona la teva lliga --</option>
+                    <option value="LaLiga">LaLiga</option>
+                    <option value="Premier League">Premier League</option>
+                    <option value="Ligue 1">Ligue 1</option>
                 </select>
 
-                <label for="equip_visitant">Equip Visitant:</label>
-                <select id="equip_visitant" name="equip_visitant" class="input-field">
-                    <option value="">-- Selecciona un equip --</option>
-                    <option value="FC Barcelona">FC Barcelona</option>
-                    <option value="Real Madrid">Real Madrid</option>
-                    <option value="Atlético de Madrid">Atlético de Madrid</option>
-                    <option value="Sevilla FC">Sevilla FC</option>
-                    <option value="Valencia CF">Valencia CF</option>
-                    <option value="Villarreal CF">Villarreal CF</option>
-                    <option value="Athletic Club">Athletic Club</option>
-                    <option value="Real Sociedad">Real Sociedad</option>
-                    <option value="Real Betis">Real Betis</option>
-                    <option value="Rayo Vallecano">Rayo Vallecano</option>
-                    <option value="Celta de Vigo">Celta de Vigo</option>
-                    <option value="CA Osasuna">CA Osasuna</option>
-                    <option value="RCD Mallorca">RCD Mallorca</option>
-                    <option value="Girona FC">Girona FC</option>
-                    <option value="UD Almería">UD Almería</option>
-                    <option value="Getafe CF">Getafe CF</option>
-                    <option value="UD Las Palmas">UD Las Palmas</option>
-                    <option value="Deportivo Alavés">Deportivo Alavés</option>
-                    <option value="Granada CF">Granada CF</option>
+                <!-- Select per l'Equip favorit -->
+                <label for="equip_local">Equip local:</label>
+                <select id="equip_local" name="equip_local" class="input-field" required>
+                    <option value="">-- Selecciona el teu equip favorit --</option>
+                    <!-- Opcions d'equips seran afegides dinàmicament amb JavaScript -->
+                </select>
+
+                <label for="equip_visitant">Equip visitant:</label>
+                <select id="equip_visitant" name="equip_visitant" class="input-field" required>
+                    <option value="">-- Selecciona el teu equip favorit --</option>
+                    <!-- Opcions d'equips seran afegides dinàmicament amb JavaScript -->
                 </select>
 
             <?php } ?>
