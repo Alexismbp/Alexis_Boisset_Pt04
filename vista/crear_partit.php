@@ -70,7 +70,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
             <?php } else { ?>
                 <!-- Select per la Lliga -->
                 <label for="lliga">Lliga:</label>
-                <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips()" required>
+                <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('crear')" required>
                     <option value="">-- Selecciona la teva lliga --</option>
                     <option value="LaLiga">LaLiga</option>
                     <option value="Premier League">Premier League</option>

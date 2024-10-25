@@ -40,7 +40,7 @@
 
             <!-- Select per la Lliga -->
             <label for="lliga">Lliga:</label>
-            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips()" required>
+            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar')" required>
                 <option value="">-- Selecciona la teva lliga --</option>
                 <option value="LaLiga">LaLiga</option>
                 <option value="Premier League">Premier League</option>
@@ -48,8 +48,8 @@
             </select>
 
             <!-- Select per l'Equip favorit -->
-            <label for="equip_favorit">Equip favorit:</label>
-            <select id="equip_favorit" name="equip_favorit" class="input-field" required>
+            <label for="equip">Equip favorit:</label>
+            <select id="equip" name="equip" class="input-field" required>
                 <option value="">-- Selecciona el teu equip favorit --</option>
                 <!-- Opcions d'equips seran afegides dinàmicament amb JavaScript -->
             </select>
