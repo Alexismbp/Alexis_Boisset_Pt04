@@ -12,17 +12,22 @@ try {
     die("Error de connexió: " . $e->getMessage());
 }
 
+//DEBUGG
+/* $_SERVER['REQUEST_METHOD'] = 'POST';
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     // Obtenim i netegem les dades del formulari
-    $id = trim($_POST["id"] ?? null);
-    $equip_local = trim($_POST["equip_local"]);
-    $equip_visitant = trim($_POST["equip_visitant"]);
-    $liga_id = getLigaID($conn, getTeamID($conn, $equip_local));
-    $data = trim($_POST["data"]); 
-    $gols_local = trim($_POST["gols_local"] ?? null);
-    $gols_visitant = trim($_POST["gols_visitant"] ?? null);
+    $id = htmlspecialchars($_POST["id"] ?? null);
+    $equip_local = htmlspecialchars($_POST["equip_local"]);
+    $equip_visitant = htmlspecialchars($_POST["equip_visitant"]);
+    $data = htmlspecialchars($_POST["data"]);
+    $gols_local = $_POST["gols_local"] ?? null;
+    $gols_visitant = $_POST["gols_visitant"] ?? null;
     $missatgesError = [];
     $error = false;
+
+    $gols_local = $gols_local === ""? null : $gols_local;
+    $gols_visitant = $gols_visitant === ""? null : $gols_visitant;
 
 
     // Comprobar camps buits
@@ -38,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
     if (empty($data)) {
         $missatgesError[] = 'La data no pot estar buida';
+        $error = true;
+    }
+
+    
+
+    if (is_numeric($gols_local) && is_numeric($gols_visitant)) {
+        $missatgesError[] = "Els gols han de ser númerics";
         $error = true;
     }
 
@@ -75,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
     $equip_local = getTeamID($conn, $equip_local);
     $equip_visitant = getTeamID($conn, $equip_visitant);
+    $liga_id = getLigaID($conn, $equip_local);
 
 
 
