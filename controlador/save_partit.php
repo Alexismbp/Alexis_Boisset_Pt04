@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     $id = trim($_POST["id"] ?? null);
     $equip_local = trim($_POST["equip_local"]);
     $equip_visitant = trim($_POST["equip_visitant"]);
-    $data = trim($_POST["data"]);
+    $liga_id = getLigaID($conn, getTeamID($conn, $equip_local));
+    $data = trim($_POST["data"]); 
     $gols_local = trim($_POST["gols_local"] ?? null);
     $gols_visitant = trim($_POST["gols_visitant"] ?? null);
     $missatgesError = [];
@@ -81,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id'] > 0) {
         $resultat = updatePartido($conn, $_SESSION['id'], $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
     } else {
-        $resultat = insertPartido($conn, $equip_local, $equip_visitant, $data, $gols_local, $gols_visitant);
+        $resultat = insertPartido($conn, $equip_local, $equip_visitant, $liga_id, $data, $gols_local, $gols_visitant);
     }
 
     // Executa la consulta

@@ -3,20 +3,21 @@
 
 
 
-function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
+function insertPartido($conn, $equipo_local_id, $equipo_visitante_id, $liga_id, $fecha, $goles_local, $goles_visitante)
 {
     $jugado = (!is_null($goles_local) && !is_null($goles_visitante)) ? 1 : 0;
-    $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, data, gols_local, gols_visitant, jugat) 
-            VALUES (:equipo_local_id, :equipo_visitante_id, :fecha, :goles_local, :goles_visitante, :jugado)";
+    $sql = "INSERT INTO partits (equip_local_id, equip_visitant_id, liga_id, data, gols_local, gols_visitant, jugat) 
+            VALUES (:equipo_local_id, :equipo_visitante_id, :liga_id, :fecha, :goles_local, :goles_visitante, :jugado)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':equipo_local_id', $equipo_local_id);
     $stmt->bindParam(':equipo_visitante_id', $equipo_visitante_id);
+    $stmt->bindParam(':liga_id', $liga_id); // Añade este parámetro
     $stmt->bindParam(':fecha', $fecha);
     $stmt->bindParam(':goles_local', $goles_local);
     $stmt->bindParam(':goles_visitante', $goles_visitante);
     $stmt->bindParam(':jugado', $jugado);
 
-    return $stmt; // Retorna el statement per executar-lo després
+    return $stmt; // Retorna el statement para ejecutar después
 }
 
 function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fecha, $goles_local, $goles_visitante)
@@ -62,8 +63,9 @@ function deletePartit($conn, $partit_id)
     return $stmt->execute();
 }
 
-// Función para guardar la predicción en la base de datos
-function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant) {
+// Función para guardar la predicción en la base de datos (No implementada aun Xavi)
+function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant)
+{
     $stmt = $conn->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
 
     // Vincular parámetros
@@ -90,4 +92,13 @@ function getTeamID($conn, $nom)
     $stmt->bindParam(':nom', $nom);
     $stmt->execute();
     return $stmt->fetchColumn();
+}
+
+function getLigaID($conn, $equipo_id) {
+    $sql = "SELECT lliga_id FROM equips WHERE id = :equipo_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':equipo_id', $equipo_id);
+    $stmt->execute();
+
+    return $stmt->fetchColumn(); // Retorna la ID de la liga
 }

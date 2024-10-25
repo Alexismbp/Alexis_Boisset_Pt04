@@ -122,8 +122,9 @@
 
                     <?php if ($_SESSION['loggedin']): ?>
                         <a href="controlador/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
-                        <a href="controlador/delete.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
+                        <a href="vista/eliminar.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>
                     <?php endif; ?>
+                    <span>ID de partit: <?php echo $partit['id'] ?></span>
                 </div>
             <?php endforeach; ?>
         </div>

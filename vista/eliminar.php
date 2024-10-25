@@ -1,4 +1,4 @@
-<!-- Alexis Boisset -->
+<!-- eliminar.php -->
 <?php
 session_start();
 require "../controlador/config.php"; // Detección de tiempo de inactividad
@@ -33,7 +33,7 @@ require "../controlador/config.php"; // Detección de tiempo de inactividad
         <!-- Formulari -->
         <form id="deleteForm" action="../controlador/delete.php" method="post">
             <label for="id">ID del partit a eliminar (numèrica):</label>
-            <input type="text" class="form-control" id="id" name="partit_id" placeholder="Escriu l'ID del partit" required>
+            <input type="text" class="form-control" id="id" name="partit_id" placeholder="Escriu l'ID del partit" value="<?php echo $_GET['id'] ?>" required>
 
             <div class="d-grid gap-2 mt-4">
                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
@@ -51,7 +51,7 @@ require "../controlador/config.php"; // Detección de tiempo de inactividad
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        ¿Estàs segur que vols eliminar aquest partit?
+                        Estàs segur que vols eliminar aquest partit?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
