@@ -18,7 +18,7 @@ $projectRootUrl = 'http://' . $_SERVER['HTTP_HOST'] . str_replace(
 // Define la URL base del proyecto
 define('BASE_URL', rtrim($projectRootUrl, '/'));
 
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 5) && ($_SESSION['loggedin'])) {
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 2400) && ($_SESSION['loggedin'])) {
     // Si han pasado más de 40 minutos
     session_unset();
     session_destroy();

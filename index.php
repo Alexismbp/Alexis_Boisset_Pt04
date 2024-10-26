@@ -5,29 +5,32 @@ require "./model/db_conn.php";
 
 session_start();
 
-// Definir el número de partidos por página
+// Definir número partits per pàgina
 if (isset($_GET['partitsPerPage'])) {
+    // Si s'ha passat el valor per GET l'agafem i aprofitem per crear la cookie
     $partitsPerPage = (int)$_GET['partitsPerPage'];
-    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/"); // Cookie válida por 30 días
+    setcookie('partitsPerPage', $partitsPerPage, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
 } elseif (isset($_COOKIE['partitsPerPage'])) {
+    // Si no hi ha GET agafem valor de cookie (si existeix)
     $partitsPerPage = (int)$_COOKIE['partitsPerPage'];
 } else {
-    $partitsPerPage = 5; // Valor por defecto
+    $partitsPerPage = 5; // Valor per defecte
 }
 
-// Selección de la lliga
+// Selecció de lliga
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
-    // Si el usuario está logueado, usamos la lliga de su equipo favorito
+    // Si l'usuari està loguejat agafem la lliga del seu equip favorit
     $lligaSeleccionada = $_SESSION['lliga'];
 } else {
-    // Si no está logueado, usamos la cookie o el valor por defecto
+    // Si no està loguejat agafem el valor seleccionat al <select> per GET
     if (isset($_GET['lliga'])) {
         $lligaSeleccionada = $_GET['lliga'];
-        setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/"); // Cookie válida por 30 días
+        setcookie('lliga', $lligaSeleccionada, time() + (86400 * 30), "/"); // Cookie vàlida per 30 díes
     } elseif (isset($_COOKIE['lliga'])) {
+        // Si no hi ha GET agafem valor de cookie (si existeix)
         $lligaSeleccionada = $_COOKIE['lliga'];
     } else {
-        $lligaSeleccionada = 'LaLiga'; // Valor por defecto
+        $lligaSeleccionada = 'LaLiga'; // Valor per defecte
     }
 }
 
@@ -37,7 +40,7 @@ $conn = connect();
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $partitsPerPage;
 
-// Consulta SQL según si el usuario está logado o no
+// Consulta SQL segons si l'usuari esta logat o no, per mostrar uns partits o tots respectivament
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $equipFavorit = $_SESSION['equip'];
     $sql = "SELECT p.id, p.data, e_local.nom AS equip_local, e_visitant.nom AS equip_visitant, p.gols_local, p.gols_visitant, p.jugat, l.nom AS lliga
@@ -69,8 +72,9 @@ $stmt->execute();
 $partits = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-// Calcular total de partidos para la paginación
+// Calcular total de partits per la paginació
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
+    // Consulta per saber quants partits juga l'equip favorit
     $totalPartitsStmt = $conn->prepare("SELECT COUNT(*) 
                                         FROM partits p
                                         JOIN equips e_local ON p.equip_local_id = e_local.id
@@ -81,6 +85,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin']) {
     $totalPartitsStmt->bindValue(':equip', $equipFavorit, PDO::PARAM_STR);
     $totalPartitsStmt->bindValue(':lliga', $lligaSeleccionada, PDO::PARAM_STR);
 } else {
+    // Consulta per saber quantitat total de partits
     $totalPartitsStmt = $conn->prepare("SELECT COUNT(*) 
                                         FROM partits p
                                         JOIN lligues l ON p.liga_id = l.id

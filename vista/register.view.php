@@ -1,6 +1,14 @@
 <?php
 //Alexis Boisset
 session_start();
+
+// Netejar camps
+if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
+    unset($_SESSION['username']);
+    unset($_SESSION['email']);
+    unset($_SESSION['lliga']);
+    unset($_SESSION['equip']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -10,7 +18,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enregistrar-se</title>
     <link rel="stylesheet" href="styles/styles_register.css">
-    <!-- Enlace al archivo JavaScript externo -->
+    <!-- Enllaç al arxiu JavaScript per carregar els <option> del <select id="equip"> -->
     <script src="../scripts/lligaequip.js" defer></script>
 </head>
 
@@ -68,7 +76,7 @@ session_start();
             <input type="submit" class="btn-submit" value="Enregistrar-se">
         </form>
 
-        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a>
+        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?netejar=true" class="btn-back">Netejar</a> <!-- Boto per netejar camps formulari -->
         <br>
         <a href="../index.php" class="btn-back">Tornar a la pàgina principal</a>
     </div>

@@ -1,6 +1,6 @@
 <!-- Alexis Boisset -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 
 <head>
     <meta charset="UTF-8">
@@ -23,6 +23,7 @@
 
 <body>
     <?php
+    // FEEDBACK
     if (isset($_SESSION['errors'])) {
         foreach ($_SESSION['errors'] as $error) {
             echo '<div class="message error">' . $error . '</div>'; // Mostra cada error.
@@ -35,9 +36,9 @@
     ?>
     <h1>Gestor de Partits</h1>
 
+    <!-- Enllaços per a gestionar els partits (només loguejat) -->
     <?php if ($_SESSION['loggedin']) : ?>
         <ul>
-            <!-- Enllaços per a gestionar els partits -->
             <li><a href="vista/crear_partit.php">Crear nou partit</a></li>
             <li><a href="vista/eliminar.php">Eliminar un partit</a></li>
         </ul>
@@ -45,7 +46,7 @@
 
     <!-- Select per a triar la lliga -->
     <?php if ($_SESSION['loggedin'] == false) : ?>
-        <!-- Mostrar select de lliga solo si no está logueado -->
+        <!-- Mostrar select de lliga NOMÉS SI NO ESTA LOGUEJAT -->
         <form method="GET" action="index.php" class="form-lliga">
             <label for="lliga">Selecciona la lliga:</label>
             <select id="lliga" name="lliga" onchange="this.form.submit()">
@@ -56,6 +57,7 @@
         </form>
         <?php else:
 
+        #Es fa us de switch per a que una vegada logat no pugui canviar de lliga, només tindrà una opció
         switch ($lligaSeleccionada):
             case 'LaLiga': ?>
                 <label for="lliga">Lliga seleccionada:</label>
@@ -110,7 +112,10 @@
                         <p>Partit programat per al: <?php echo date('d-m-Y', strtotime($partit['data'])); ?></p>
                     <?php endif; ?>
 
+
+                    <!-- WORK IN PROGRESS, no afecta al funcionament del programa -->
                     <?php if (!$partit['jugat'] && $_SESSION['loggedin'] == true): ?>
+                        <span><b>Work in progress, better not to touch (risk of crash)</b></span>
                         <form action="controlador/guardar_prediccio.php" method="POST">
                             <input type="hidden" name="partit_id" value="<?php echo $partit['id']; ?>">
                             <label for="gols_local">Gols Local:</label>
@@ -119,8 +124,10 @@
                             <input type="number" name="gols_visitant" min="0" required>
                             <button type="submit">Guardar Predicció</button>
                         </form>
+                        <br>
                     <?php endif; ?>
 
+                    <!-- Si esta loguejat mostra botons de edit y delete -->
                     <?php if ($_SESSION['loggedin']): ?>
                         <a href="controlador/save_partit.php?id=<?php echo $partit['id'] ?>">Editar Partit</a>
                         <a href="vista/eliminar.php?id=<?php echo $partit['id'] ?>">Eliminar Partit</a>

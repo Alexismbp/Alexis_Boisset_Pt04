@@ -1,6 +1,12 @@
 <!-- Alexis Boisset -->
 <?php
 session_start();
+
+// Netejar variable de sessió "email" y tornar a Index.php
+if (isset($_GET['back']) && $_GET['back'] == true) {
+    unset($_SESSION['email']);
+    header("Location: ../index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="ca">
@@ -41,7 +47,7 @@ session_start();
             <input type="submit" class="btn-submit" value="Logar-se">
         </form>
 
-        <a href="../index.php" class="btn-back">Tornar a la pàgina principal</a>
+        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?back=true" class="btn-back">Tornar enrere</a> <!-- Botó per netejar els camps del formulari i tornar enrere -->
     </div>
 </body>
 
