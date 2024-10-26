@@ -1,6 +1,6 @@
-<!-- eliminar.php -->
+<!-- Alexis Boisset -->
 <?php
-require "../controlador/config.php"; // Detección de tiempo de inactividad
+require "../controlador/config.php"; // Detecció de temps d'inactivitat
 session_start();
 
 if (!isset($_SESSION['loggedin'])) {

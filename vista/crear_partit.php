@@ -2,6 +2,7 @@
 // Alexis Boisset
 
 require "../controlador/config.php"; // Detecció de temps d'inactivitat
+
 session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
 
 if (!isset($_SESSION['loggedin'])) {

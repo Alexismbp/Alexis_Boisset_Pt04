@@ -22,7 +22,7 @@ if (isset($_GET['netejar']) && $_GET['netejar'] == true) {
     <script src="../scripts/lligaequip.js" defer></script>
 </head>
 
-<body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')">
+<body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>')">
     <div class="container">
         <h1>Enregistrar-se</h1>
 

@@ -1,6 +1,6 @@
 <!-- Alexis Boisset -->
 <?php
-require "controlador/config.php";
+require "controlador/config.php"; // Fitxer per detectar innactivitat
 require "./model/db_conn.php";
 
 session_start();
