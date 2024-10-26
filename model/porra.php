@@ -40,15 +40,15 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
 }
 
 // Agafar dades dels partits
-function consultarPartido($conn)
+function consultarPartido($conn, $id)
 {
-    $sql = "SELECT * FROM partits";
+    $sql = "SELECT * FROM partits WHERE id = :id";
     $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id);
 
     $stmt->execute();
     return $stmt; // Retorna el statement per a futures manipulacions
 }
-
 
 // Delete per esborrar partits
 function deletePartit($conn, $partit_id)
@@ -101,4 +101,19 @@ function getLigaID($conn, $equipo_id)
     $stmt->execute();
 
     return $stmt->fetchColumn(); // Retorna la ID de la liga
+}
+
+
+function getLeagueName($equipLocal, $conn)
+{
+    // Obtener el nom de la lliga del equip favorit
+    $query = $conn->prepare("SELECT lligues.nom AS lliga FROM equips 
+    JOIN lligues ON equips.lliga_id = lligues.id 
+    WHERE equips.nom = :equipLocal");
+    $query->bindParam(':equipLocal', $equipLocal);
+    
+    $query->execute();
+    
+    $nomLliga = $query->fetch(PDO::FETCH_COLUMN);
+    return $nomLliga; // Return del nom de la lliga exclusivament
 }

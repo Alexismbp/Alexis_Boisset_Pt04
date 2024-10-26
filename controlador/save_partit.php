@@ -13,10 +13,9 @@ try {
     die("Error de connexió: " . $e->getMessage());
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     // Obtenim i netegem les dades del formulari
-    $id = htmlspecialchars($_POST["id"] ?? null);
+    /* $id = htmlspecialchars($_POST["id"] ?? null); */
     $equip_local = htmlspecialchars($_POST["equip_local"]);
     $equip_visitant = htmlspecialchars($_POST["equip_visitant"]);
     $data = htmlspecialchars($_POST["data"]);
@@ -158,6 +157,7 @@ function dadesEdicio($conn, $partit, $id)
     $_SESSION['jugat'] = $partit['jugat'];
     $_SESSION["id"] = $id;
     $_SESSION['editant'] = true;
+    $_SESSION['lliga'] = getLeagueName($equip_local_name,$conn);
 
     return true;
 }
