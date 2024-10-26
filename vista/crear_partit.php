@@ -1,9 +1,12 @@
 <?php
 // Alexis Boisset
 
-session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
 require "../controlador/config.php"; // Detecció de temps d'inactivitat
+session_start(); // Inicia la sessió per a gestionar l'estat de l'usuari i les dades del formulari.
 
+if (!isset($_SESSION['loggedin'])) {
+    header("Location: " . BASE_URL);
+}
 // Si s'ha fet click al boto "Netejar"
 if (isset($_GET['netejar'])) {
     unset($_SESSION['id']);
@@ -26,17 +29,17 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear o Editar Partit</title>
-    <link rel="stylesheet" href="styles/styles_crear.css"> <!-- Enllaç al fitxer de CSS per estilitzar la pàgina. -->
+    <link rel="stylesheet" href="styles/styles_crear.css"> 
     <script src="../scripts/lligaequip.js" defer></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>Crear o Editar Partit</h1> <!-- Títol de la pàgina. -->
-        <form action="../controlador/save_partit.php" method="POST"> <!-- Formulari per crear o editar un partit. -->
-            <!-- Missatges d'èxit o error -->
+        <h1>Crear o Editar Partit</h1> 
+        <form action="../controlador/save_partit.php" method="POST"> 
+            <!-- FEEDBACK -->
             <?php
-            // Mostra missatges d'èxit o error si existeixen.
+            // Mostra missatges d'èxit o error SI EXISTEIXEN.
             if (isset($_SESSION['success'])) {
                 echo '<div class="message success">' . $_SESSION['success'] . '</div>'; // Missatge d'èxit.
                 unset($_SESSION['success']); // Neteja el missatge de la sessió.
@@ -45,7 +48,7 @@ $edit = (isset($_SESSION['editant'])) ? "readonly" : ""; // Si l'usuari està ed
                 unset($_SESSION['failure']); // Neteja el missatge de la sessió.
             }
 
-            // Mostra errors si existeixen.
+            // Mostra errors SI EXISTEIXEN.
             if (isset($_SESSION['errors'])) {
                 foreach ($_SESSION['errors'] as $error) {
                     echo '<div class="message error">' . $error . '</div>'; // Mostra cada error.

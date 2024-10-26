@@ -1,9 +1,10 @@
+-- Alexis Boisset --
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-10-2024 a las 11:33:59
+-- Tiempo de generación: 25-10-2024 a las 22:17:58
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -183,7 +184,6 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 (70, 40, 40, '2024-11-20', NULL, NULL, 0, 2),
 (71, 41, 42, '2024-11-01', 2, 2, 1, 3),
 (72, 43, 44, '2024-11-02', NULL, NULL, 0, 3),
-(73, 45, 46, '2024-11-03', 1, 1, 1, 3),
 (74, 47, 48, '2024-11-04', NULL, NULL, 0, 3),
 (75, 49, 50, '2024-11-05', 3, 0, 1, 3),
 (76, 51, 52, '2024-11-06', NULL, NULL, 0, 3),
@@ -194,13 +194,28 @@ INSERT INTO `partits` (`id`, `equip_local_id`, `equip_visitant_id`, `data`, `gol
 (81, 41, 43, '2024-11-11', 3, 1, 1, 3),
 (82, 42, 44, '2024-11-12', NULL, NULL, 0, 3),
 (83, 45, 47, '2024-11-13', 2, 1, 1, 3),
-(84, 46, 48, '2024-11-14', NULL, NULL, 0, 3),
 (85, 49, 51, '2024-11-15', 1, 1, 1, 3),
 (86, 52, 54, '2024-11-16', NULL, NULL, 0, 3),
 (87, 53, 55, '2024-11-17', 1, 0, 1, 3),
 (88, 56, 58, '2024-11-18', NULL, NULL, 0, 3),
 (89, 57, 59, '2024-11-19', 2, 2, 1, 3),
-(90, 60, 60, '2024-11-20', NULL, NULL, 0, 3);
+(90, 60, 60, '2024-11-20', NULL, NULL, 0, 3),
+(91, 46, 45, '2024-10-25', 1, 2, 1, 3),
+(93, 46, 41, '2024-11-01', NULL, NULL, 0, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prediccions`
+--
+
+CREATE TABLE `prediccions` (
+  `id` int(11) NOT NULL,
+  `partit_id` int(11) NOT NULL,
+  `usuari_id` int(11) NOT NULL,
+  `gols_local` tinyint(4) DEFAULT NULL,
+  `gols_visitant` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -222,7 +237,8 @@ CREATE TABLE `usuaris` (
 
 INSERT INTO `usuaris` (`id`, `nom_usuari`, `correu_electronic`, `contrasenya`, `equip_favorit`) VALUES
 (1, 'Alexis', 'alexis@gmail.com', '$2y$10$5jOplzI9.lewF548D4UBwe.4Q/9QKm5EvfMdZX1V9e.K5U/ydH3pe', 'OGC Nice'),
-(2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC');
+(2, 'Xavi', 'xavi@gmail.com', '$2y$10$CyjHCsfj9nNgrvf4BvUaIO9.mgEb4wrn3u7uWqQYZl43CfsO1Ueyi', 'Girona FC'),
+(3, 'Josep', 'jpedrerol@gmail.com', '$2y$10$UzJrOph0LT2CCR8.w2qBVOKnk1gArl8UonbTGn3UYtLykVuDcY.z.', 'Crystal Palace');
 
 --
 -- Índices para tablas volcadas
@@ -253,6 +269,14 @@ ALTER TABLE `partits`
   ADD KEY `fk_liga` (`liga_id`);
 
 --
+-- Indices de la tabla `prediccions`
+--
+ALTER TABLE `prediccions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `partit_id` (`partit_id`),
+  ADD KEY `usuari_id` (`usuari_id`);
+
+--
 -- Indices de la tabla `usuaris`
 --
 ALTER TABLE `usuaris`
@@ -280,13 +304,19 @@ ALTER TABLE `lligues`
 -- AUTO_INCREMENT de la tabla `partits`
 --
 ALTER TABLE `partits`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
+--
+-- AUTO_INCREMENT de la tabla `prediccions`
+--
+ALTER TABLE `prediccions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuaris`
 --
 ALTER TABLE `usuaris`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -305,6 +335,13 @@ ALTER TABLE `partits`
   ADD CONSTRAINT `fk_liga` FOREIGN KEY (`liga_id`) REFERENCES `lligues` (`id`),
   ADD CONSTRAINT `partits_ibfk_1` FOREIGN KEY (`equip_local_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `partits_ibfk_2` FOREIGN KEY (`equip_visitant_id`) REFERENCES `equips` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `prediccions`
+--
+ALTER TABLE `prediccions`
+  ADD CONSTRAINT `prediccions_ibfk_1` FOREIGN KEY (`partit_id`) REFERENCES `partits` (`id`),
+  ADD CONSTRAINT `prediccions_ibfk_2` FOREIGN KEY (`usuari_id`) REFERENCES `usuaris` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -15,6 +15,10 @@ session_start();
 <body>
     <div class="container">
         <h1>Logar-se</h1>
+        <?php if (isset($_SESSION['session_ended']) && $_SESSION['session_ended'] = true): ?>
+            <h3>Sessió expirada</h3>
+        <?php endif ?>
+
 
         <form action="../controlador/login.controller.php" method="POST">
             <!-- FEEDBACK -->
@@ -29,7 +33,7 @@ session_start();
             ?>
 
             <label for="email">Correu electrònic:</label>
-            <input type="email" id="email" name="email" class="input-field" required>
+            <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email']; ?>" required>
 
             <label for="password">Contrasenya:</label>
             <input type="password" id="password" name="password" class="input-field" required>

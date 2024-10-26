@@ -39,22 +39,18 @@ function updatePartido($conn, $id, $equipo_local_id, $equipo_visitante_id, $fech
     return $stmt; // Retorna el statement per executar-lo després
 }
 
-// Creo un optional parameter per si utilitzo la funció sense passar un valor d'ID, serveix per reutilitzar la funció en controlador/list.php
-function consultarPartido($conn, $id = '')
+// Agafar dades dels partits
+function consultarPartido($conn)
 {
-    if (empty($id)) {
-        $sql = "SELECT * FROM partits";
-        $stmt = $conn->prepare($sql);
-    } else {
-        $sql = "SELECT * FROM partits WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $id);
-    }
+    $sql = "SELECT * FROM partits";
+    $stmt = $conn->prepare($sql);
+
     $stmt->execute();
     return $stmt; // Retorna el statement per a futures manipulacions
 }
 
 
+// Delete per esborrar partits
 function deletePartit($conn, $partit_id)
 {
     $sql = "DELETE FROM partits WHERE id = :partit_id";
@@ -63,21 +59,22 @@ function deletePartit($conn, $partit_id)
     return $stmt->execute();
 }
 
-// Función para guardar la predicción en la base de datos (No implementada aun Xavi)
+// Funció per guardar la predicció en la base de dades (WORK IN PROGRESS)
 function guardarPrediccio($conn, $partit_id, $usuari_id, $gols_local, $gols_visitant)
 {
     $stmt = $conn->prepare("INSERT INTO prediccions (partit_id, usuari_id, gols_local, gols_visitant) VALUES (:partit_id, :usuari_id, :gols_local, :gols_visitant)");
 
-    // Vincular parámetros
+    // Vincular params
     $stmt->bindParam(':partit_id', $partit_id);
     $stmt->bindParam(':usuari_id', $usuari_id);
     $stmt->bindParam(':gols_local', $gols_local);
     $stmt->bindParam(':gols_visitant', $gols_visitant);
 
-    // Ejecutar y devolver el resultado
+    // Executar i tornar resultat
     return $stmt->execute();
 }
 
+// Funció per obtenir el nom d'un equip
 function getTeamName($conn, $id)
 {
     $stmt = $conn->prepare("SELECT nom FROM equips WHERE id = :id");
@@ -86,15 +83,18 @@ function getTeamName($conn, $id)
     return $stmt->fetchColumn();
 }
 
+// Funció per obtenir l'ID d'un equip per fer-ho DATA BASE READABLE (no sé si existeix el terme)
 function getTeamID($conn, $nom)
 {
     $stmt = $conn->prepare("SELECT id FROM equips WHERE nom = :nom");
     $stmt->bindParam(':nom', $nom);
     $stmt->execute();
-    return $stmt->fetchColumn();
+    return $stmt->fetchColumn(); // Retorna ID equip
 }
 
-function getLigaID($conn, $equipo_id) {
+// Funció per obtenir l'ID d'una lliga per fer-la DATA BASE READABLE (sona bé)
+function getLigaID($conn, $equipo_id)
+{
     $sql = "SELECT lliga_id FROM equips WHERE id = :equipo_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':equipo_id', $equipo_id);

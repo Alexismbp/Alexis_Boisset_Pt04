@@ -1,7 +1,9 @@
+<!-- WORK IN PROGRESS -->
 <?php
+//Alexis Boisset
 try {
     session_start();
-    require '../model/db_conn.php'; // Asegúrate de incluir tu archivo de conexión a la base de datos
+    require '../model/db_conn.php'; 
     require '../model/porra.php';
     
     

@@ -1,20 +1,19 @@
 <?php
 // Alexis Boisset
-session_start();
-
 require "../model/db_conn.php";
 require "../model/porra.php";
 
+session_start();
 
+
+// Connexió a la base de dades
 try {
     $conn = connect();
 } catch (PDOException $e) {
     die("Error de connexió: " . $e->getMessage());
 }
 
-//DEBUGG
-/* $_SERVER['REQUEST_METHOD'] = 'POST';
- */
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     // Obtenim i netegem les dades del formulari
     $id = htmlspecialchars($_POST["id"] ?? null);
@@ -26,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
     $missatgesError = [];
     $error = false;
 
-    $gols_local = $gols_local === ""? null : $gols_local;
-    $gols_visitant = $gols_visitant === ""? null : $gols_visitant;
+    $gols_local = $gols_local === "" ? null : $gols_local;
+    $gols_visitant = $gols_visitant === "" ? null : $gols_visitant;
 
 
-    // Comprobar camps buits
+    // Comprobar correcta inserció de valors als camps
     if (empty($equip_local)) {
         $missatgesError[] = 'L\'equip local no pot estar buit';
         $error = true;
@@ -45,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         $missatgesError[] = 'La data no pot estar buida';
         $error = true;
     }
-
-    
 
     if (is_numeric($gols_local) && is_numeric($gols_visitant)) {
         $missatgesError[] = "Els gols han de ser númerics";
@@ -85,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         exit();
     }
 
+    // Obté valors adaptats a la base de dades
     $equip_local = getTeamID($conn, $equip_local);
     $equip_visitant = getTeamID($conn, $equip_visitant);
     $liga_id = getLigaID($conn, $equip_local);
@@ -113,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
         exit();
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && $conn) {
-
+    // SI LA ID ES REP PER GET (quan cliquem a editar partit desde l'index)
     $id = $_GET['id'];
 
     if (!empty($id) && !is_numeric($id)) {
@@ -145,10 +143,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn) {
 
 
 
-// Obtenim els noms dels equips per a mostrar-los
+// Obtenim els noms y dades dels equips y partits per a mostrar-los
 function dadesEdicio($conn, $partit, $id)
 {
-
+    // Pasar a una dada que sigui HUMAN READABLE (B2 English)
     $equip_local_name = isset($partit['equip_local_id'])  ? getTeamName($conn, $partit['equip_local_id']) : '';
     $equip_visitant_name = isset($partit['equip_visitant_id']) ? getTeamName($conn, $partit['equip_visitant_id']) : '';
 

@@ -2,23 +2,23 @@
 // Alexis Boisset
 try {
     session_start();
-
+    $missatgesError = [];
     require '../model/db_conn.php';
     require '../model/user_model.php';
 
-
+    
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $conn = connect()) {
 
+        // Agafa les dades del formulari y les formata correctament
         $nomUsuari = validate($_POST['username']);
         $contrasenya = validate($_POST['password']);
         $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
         $passwordConfirm = validate($_POST['password_confirm']);
         $email = validate($_POST['email']);
         $equipFavorit = validate($_POST['equip']);
-        $missatgesError = [];
         $error = false;
 
-        // Validación de campos
+        // Validació de camps
         if (empty($nomUsuari)) {
             $missatgesError[] = "El nom d'usuari no pot estar buit";
             $error = true;
@@ -51,10 +51,10 @@ try {
             throw new Exception();
         }
 
-        // Encriptamos la contraseña
+        // Encript de la contrasenya
         $contrasenyaHashed = password_hash($contrasenya, PASSWORD_DEFAULT);
 
-        // Registrar usuario
+        // Registrar usuari
         if (registerUser($nomUsuari, $email, $contrasenyaHashed, $equipFavorit, $conn)) {
 
             // Asignar valores a la sesión
@@ -64,7 +64,7 @@ try {
             $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
             $_SESSION['success'] = "Usuari registrat correctament";
 
-            // Redireccionar a la página de inicio
+            // Redireccionar a la pàgina d'inici (prefereixo això que haver de tornar a logar-me)
             header("Location: ../index.php");
             exit();
         } else {
@@ -73,16 +73,19 @@ try {
         }
     }
 } catch (Throwable $th) {
-    $_SESSION['failure'] = "Hi ha hagut un error: " . $th->getMessage();
+    // Si falla assignem les dades a $_SESSION per recuperar-les al formulari
+    $_SESSION['failure'] = empty($th->getMessage()) ? null : "Hi ha hagut un error: " . $th->getMessage();
     $_SESSION['errors'] = $missatgesError;
     $_SESSION['username'] = $nomUsuari;
     $_SESSION['email'] = $email;
+    $_SESSION['lliga'] = getLeagueName($equipFavorit, $conn);
     $_SESSION['equip'] = $equipFavorit;
 } finally {
     header("Location: ../vista/register.view.php");
     exit();
 }
 
+// Funció per prevenir entrades no desitjades de dades o injects
 function validate($data)
 {
     $data = trim($data);

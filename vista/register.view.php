@@ -1,3 +1,7 @@
+<?php
+//Alexis Boisset
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="ca">
 
@@ -10,7 +14,7 @@
     <script src="../scripts/lligaequip.js" defer></script>
 </head>
 
-<body>
+<body onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')">
     <div class="container">
         <h1>Enregistrar-se</h1>
 
@@ -28,6 +32,7 @@
                 foreach ($_SESSION['errors'] as $error) {
                     echo '<div class="message error">' . $error . '</div>';
                 }
+                $edit = true;
                 unset($_SESSION['errors']);
             }
             ?>
@@ -39,12 +44,12 @@
             <input type="email" id="email" name="email" class="input-field" value="<?php echo $_SESSION['email'] ?>" required>
 
             <!-- Select per la Lliga -->
-            <label for="lliga">Lliga:</label>
-            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar')" required>
+            <label for="lliga">Lliga on juga el teu equip favorit:</label>
+            <select id="lliga" name="lliga" class="input-field" onchange="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')" onload="actualitzarEquips('registrar', '<?php echo $_SESSION['equip'] ?>', '<?php echo $_SESSION['lliga'] ?>')" required>
                 <option value="">-- Selecciona la teva lliga --</option>
-                <option value="LaLiga">LaLiga</option>
-                <option value="Premier League">Premier League</option>
-                <option value="Ligue 1">Ligue 1</option>
+                <option value="LaLiga" <?php if ($_SESSION['lliga'] == 'LaLiga') echo 'selected'; ?>>LaLiga</option>
+                <option value="Premier League" <?php if ($_SESSION['lliga'] == 'Premier League') echo 'selected'; ?>>Premier League</option>
+                <option value="Ligue 1" <?php if ($_SESSION['lliga'] == 'Ligue 1') echo 'selected'; ?>>Ligue 1</option>
             </select>
 
             <!-- Select per l'Equip favorit -->

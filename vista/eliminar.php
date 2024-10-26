@@ -1,7 +1,11 @@
 <!-- eliminar.php -->
 <?php
-session_start();
 require "../controlador/config.php"; // Detección de tiempo de inactividad
+session_start();
+
+if (!isset($_SESSION['loggedin'])) {
+    header("Location: ./login.vista.php");
+}
 ?>
 
 <!DOCTYPE html>
